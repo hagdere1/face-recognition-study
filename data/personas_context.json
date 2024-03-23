@@ -2,9 +2,9 @@
     {
         "id": 0,
         "name": "Malik",
-        "image": "male_hispanic_1",
+        "image": "male_white_1",
         "gender": "male",
-        "race": "hispanic",
+        "race": "white",
         "emotionalValency": "positive",
         "context": {
             "sentence": "Malik enjoys working with his uncles",
@@ -34,5 +34,80 @@
             "sentence": "Stephania makes sure her puppy is fed every night",
             "hasFamily": true
         }
+    },
+
+    {
+        "id": 3,
+        "name": "Joey",
+        "image": "male_white_2",
+        "gender": "male",
+        "race": "white",
+        "emotionalValency": "positive",
+        "context": {
+            "sentence": "Joey enjoys working with his uncles",
+            "hasFamily": true
+        }
+    },
+    {
+        "id": 4,
+        "name": "Clara",
+        "image": "female_white_2",
+        "gender": "female",
+        "race": "white",
+        "emotionalValency": "positive",
+        "context": {
+            "sentence": "Clara enjoys working with her uncles",
+            "hasFamily": true
+        }
+    },
+    {
+        "id": 5,
+        "name": "Grace",
+        "image": "female_asian_2",
+        "gender": "female",
+        "race": "asian",
+        "emotionalValency": "positive",
+        "context": {
+            "sentence": "Grace enjoys working with her uncles",
+            "hasFamily": true
+        }
+    },
+
+    {
+        "id": 6,
+        "name": "Fannie",
+        "image": "female_asian_3",
+        "gender": "female",
+        "race": "asian",
+        "emotionalValency": "positive",
+        "context": {
+            "sentence": "Fannie enjoys working with her uncles",
+            "hasFamily": true
+        }
+    },
+    {
+        "id": 7,
+        "name": "Henrietta",
+        "image": "female_white_3",
+        "gender": "female",
+        "race": "white",
+        "emotionalValency": "positive",
+        "context": {
+            "sentence": "Henrietta enjoys working with her uncles",
+            "hasFamily": true
+        }
+    },
+    {
+        "id": 8,
+        "name": "George",
+        "image": "male_white_3",
+        "gender": "male",
+        "race": "white",
+        "emotionalValency": "positive",
+        "context": {
+            "sentence": "George enjoys working with his uncles",
+            "hasFamily": true
+        }
     }
+
 ]

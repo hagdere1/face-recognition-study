@@ -4,8 +4,17 @@ import { images as sourceImages } from '../../../utils'
 import Button from '@mui/material/Button';
 import { useStopwatch } from 'react-use-precision-timer';
 
+type Response = {
+  time: number,
+  correctAnswer: number,
+  selectedAnswer: number
+}
+
 type Persona = {
-  context?: string,
+  context?: {
+    sentence: string,
+    hasFamily: boolean
+  },
   emotionalValency: string,
   gender: string,
   id: number,
@@ -22,13 +31,14 @@ type PhotoGridImageType = {
 
 type FaceSelectionProps = {
   page: number,
-  goToNextPage: () => void
+  goToNextPage: () => void,
+  setTrialResponses: (values: any) => void
 }
 
-export default function FaceSelection({ page, goToNextPage }: FaceSelectionProps) {
+export default function FaceSelection({ page, goToNextPage, setTrialResponses }: FaceSelectionProps) {
   const [data, setData] = useState<Persona[]>([])
 
-  const [results, setResults] = useState<number[]>([])
+  const [responses, setResponses] = useState<Response[]>([])
  
   const [selectedImage, setSelectedImage] = useState("")
 
@@ -48,22 +58,18 @@ export default function FaceSelection({ page, goToNextPage }: FaceSelectionProps
   const gridWidth = 500
 
   useEffect(() => {
-     let loaded = 0; // Initialise a counter
+     let loaded = 0;
      const images: PhotoGridImageType[] = []
 
      sourceImages.forEach(({ src }) => {
         var photo = new Image();
         photo.src = src;
         photo.onload = () => {
-          // Add loaded image to array
           images.push({ src, width: photo.naturalWidth, height: photo.naturalHeight });
-          // Update the state
 
-          // Up the loaded counter and compare
           if (++loaded === sourceImages.length) {
             const shuffledImages = shuffleImages(images)
             setLoadedImages(shuffledImages);
-            // setLoadedImages(images)
             setIsLoadingImageGrid(false);
           }
         };
@@ -86,8 +92,19 @@ export default function FaceSelection({ page, goToNextPage }: FaceSelectionProps
   }
 
   const selectImage = (src: string) => {
-    setResults([...results, stopwatch.getElapsedStartedTime()])
+    const imageName = src.split('/').pop()?.split('.')[0]
+
+    setResponses([
+      ...responses, 
+      {
+        time: stopwatch.getElapsedStartedTime(),
+        correctAnswer: data[nameIndex].id,
+        selectedAnswer: (data.find(persona => persona.image === imageName) as Persona).id
+      }
+    ])
+
     stopwatch.stop()
+
     setSelectedImage(src)
     setTimeout(goToNextPerson, 2000)
   }
@@ -101,6 +118,7 @@ export default function FaceSelection({ page, goToNextPage }: FaceSelectionProps
         stopwatch.start()
     } else {
         setIsFinished(true)
+        setTrialResponses(responses)
     }
   }
 
@@ -109,15 +127,19 @@ export default function FaceSelection({ page, goToNextPage }: FaceSelectionProps
   }
 
   if (isFinished) {
-    return <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: 36 }}>
-      <div>Done!</div>
+    return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: 36 }}>
+      <div>
+        {page === 3 
+          ? "You have completed both trials. Click continue to view your results."
+          : "Click the continue button to proceed to the next trial."
+        }
+      </div>
       <Button variant="contained" onClick={goToNextPage} style={{ marginTop: 24 }}>Continue</Button>
     </div>
-  }
+  )}
 
   const examplePersona = data[nameIndex]
-
-  console.log("RESULTS: ", results)
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 36 }}>
@@ -136,18 +158,10 @@ export default function FaceSelection({ page, goToNextPage }: FaceSelectionProps
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, height: gridWidth + 4, width: gridWidth }}>
               {loadedImages.map((image, index) => (
-                  <>
-                  {/* <div >{image.src}</div> */}
                   <img
                       onClick={() => {
                         if (selectedImage) {
                           return
-                        }
-
-                        if (image.src.includes(examplePersona.image)) {
-                            // console.log(true)
-                        } else {
-                            // console.log(false)
                         }
                         selectImage(image.src)
                       }}
@@ -161,7 +175,6 @@ export default function FaceSelection({ page, goToNextPage }: FaceSelectionProps
                         border: selectedImage === image.src ? "5px solid blue" : "none" 
                       }}
                   />
-                  </>
               ))}
           </div>
 

@@ -1,53 +1,75 @@
 'use client'
 import FaceSelection from "./components/FaceSelection";
-import Finished from "./components/Finished";
+import Results from "./components/Results";
 import Slideshow from "./components/Slideshow/Slideshow";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const PAGE = {
   SLIDESHOW_1: 0,
   FACE_SELECTION_1: 1,
   SLIDESHOW_2: 2,
   FACE_SELECTION_2: 3,
-  FINISHED: 4
+  RESULTS: 4
 }
 
 const NEXT_PAGE = {
   [PAGE.SLIDESHOW_1]: PAGE.FACE_SELECTION_1,
   [PAGE.FACE_SELECTION_1]: PAGE.SLIDESHOW_2,
   [PAGE.SLIDESHOW_2]: PAGE.FACE_SELECTION_2,
-  [PAGE.FACE_SELECTION_2]: PAGE.FINISHED
+  [PAGE.FACE_SELECTION_2]: PAGE.RESULTS
 }
 
 export default function Home() {
   const [page, setPage] = useState(0)
 
+  const [trial1Responses, setTrial1Responses] = useState([])
+  const [trial2Responses, setTrial2Responses] = useState([])
+
   const goToNextPage = () => {
-    setPage(NEXT_PAGE[page])
+    const nextPage = NEXT_PAGE[page]
+
+    setPage(nextPage)
   }
+
+  const submitResponses = async () => {
+    const payload = {
+      trial1: trial1Responses,
+      trial2: trial2Responses
+    }
+
+    console.log(payload)
+
+    // TO DO
+  }
+
+  useEffect(() => {
+    if (trial2Responses.length) {
+      submitResponses()
+    }
+  }, [trial2Responses])
 
   return (
     <main style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: 36}}>
       <h1>Face Recognition Study</h1>
 
-      {page === 0 && (
-        <Slideshow page={0} goToNextPage={goToNextPage} />
+      {page === PAGE.SLIDESHOW_1 && (
+        <Slideshow hasContext={false} goToNextPage={goToNextPage} />
       )}
 
-      {page === 1 && (
-        <FaceSelection page={1} goToNextPage={goToNextPage} />
+      {page === PAGE.FACE_SELECTION_1 && (
+        <FaceSelection page={PAGE.FACE_SELECTION_1} goToNextPage={goToNextPage} setTrialResponses={setTrial1Responses} />
       )}
 
-      {page === 2 && (
-        <Slideshow page={2} goToNextPage={goToNextPage} />
+      {page === PAGE.SLIDESHOW_2 && (
+        <Slideshow hasContext={true} goToNextPage={goToNextPage} />
       )}
 
-      {page === 3 && (
-        <FaceSelection page={3} goToNextPage={goToNextPage} />
+      {page === PAGE.FACE_SELECTION_2 && (
+        <FaceSelection page={PAGE.FACE_SELECTION_2} goToNextPage={goToNextPage} setTrialResponses={setTrial2Responses} />
       )}
 
-      {page === 4 && (
-        <Finished />
+      {page === PAGE.RESULTS && (
+        <Results trial1Responses={trial1Responses} trial2Responses={trial2Responses} />
       )}
     </main>
   );

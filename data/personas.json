@@ -54,5 +54,33 @@
         "race": "asian",
         "emotionalValency": "positive",
         "context": null
+    },
+
+    {
+        "id": 6,
+        "name": "Fannie",
+        "image": "female_asian_3",
+        "gender": "female",
+        "race": "asian",
+        "emotionalValency": "positive",
+        "context": null
+    },
+    {
+        "id": 7,
+        "name": "Henrietta",
+        "image": "female_white_3",
+        "gender": "female",
+        "race": "white",
+        "emotionalValency": "positive",
+        "context": null
+    },
+    {
+        "id": 8,
+        "name": "George",
+        "image": "male_white_3",
+        "gender": "male",
+        "race": "white",
+        "emotionalValency": "positive",
+        "context": null
     }
 ]
