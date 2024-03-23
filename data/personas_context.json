@@ -1,0 +1,38 @@
+[
+    {
+        "id": 0,
+        "name": "Malik",
+        "image": "male_hispanic_1",
+        "gender": "male",
+        "race": "hispanic",
+        "emotionalValency": "positive",
+        "context": {
+            "sentence": "Malik enjoys working with his uncles",
+            "hasFamily": true
+        }
+    },
+    {
+        "id": 1,
+        "name": "Shoshana",
+        "image": "female_white_1",
+        "gender": "female",
+        "race": "white",
+        "emotionalValency": "positive",
+        "context": {
+            "sentence": "Shoshana loves when her baby brother hugs her",
+            "hasFamily": true
+        }
+    },
+    {
+        "id": 2,
+        "name": "Stephania",
+        "image": "female_asian_1",
+        "gender": "female",
+        "race": "asian",
+        "emotionalValency": "positive",
+        "context": {
+            "sentence": "Stephania makes sure her puppy is fed every night",
+            "hasFamily": true
+        }
+    }
+]
