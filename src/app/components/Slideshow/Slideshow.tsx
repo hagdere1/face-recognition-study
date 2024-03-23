@@ -1,5 +1,5 @@
 'use client'
-import { images } from '../../../utils'
+import { images_t1, images_t2 } from '../../../utils'
 import { useEffect, useState } from "react";
 import Button from '@mui/material/Button';
 import { useTimer } from 'react-use-precision-timer';
@@ -33,6 +33,8 @@ export default function Slideshow({ hasContext, goToNextPage }: SlideshowProps) 
   const [data, setData] = useState<Persona[]>([])
 
   const instructions = hasContext ? trial2Instructions : trial1Instructions
+
+  const images = hasContext ? images_t2 : images_t1
 
   const timer = useTimer({ delay: 5000 }, () => setIndex(currentValue => {
     if (currentValue < images.length - 1) {

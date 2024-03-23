@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from "react";
-import { images as sourceImages } from '../../../utils'
+import { images_t1 } from '../../../utils'
+import { images_t2 } from '../../../utils'
 import Button from '@mui/material/Button';
 import { useStopwatch } from 'react-use-precision-timer';
 
@@ -30,12 +31,12 @@ type PhotoGridImageType = {
 };
 
 type FaceSelectionProps = {
-  page: number,
+  hasContext: boolean,
   goToNextPage: () => void,
   setTrialResponses: (values: any) => void
 }
 
-export default function FaceSelection({ page, goToNextPage, setTrialResponses }: FaceSelectionProps) {
+export default function FaceSelection({ hasContext, goToNextPage, setTrialResponses }: FaceSelectionProps) {
   const [data, setData] = useState<Persona[]>([])
 
   const [responses, setResponses] = useState<Response[]>([])
@@ -55,19 +56,25 @@ export default function FaceSelection({ page, goToNextPage, setTrialResponses }:
     return images.sort(() => Math.random() - 0.5)
   }
 
+  const shufflePersonas = (personas: Persona[]) => {
+    return personas.sort(() => Math.random() - 0.5)
+  }
+
   const gridWidth = 500
 
   useEffect(() => {
      let loaded = 0;
      const images: PhotoGridImageType[] = []
 
-     sourceImages.forEach(({ src }) => {
+     const trialImages = hasContext ? images_t2 : images_t1
+
+     trialImages.forEach(({ src }) => {
         var photo = new Image();
         photo.src = src;
         photo.onload = () => {
           images.push({ src, width: photo.naturalWidth, height: photo.naturalHeight });
 
-          if (++loaded === sourceImages.length) {
+          if (++loaded === trialImages.length) {
             const shuffledImages = shuffleImages(images)
             setLoadedImages(shuffledImages);
             setIsLoadingImageGrid(false);
@@ -79,16 +86,41 @@ export default function FaceSelection({ page, goToNextPage, setTrialResponses }:
   const fetchPersonas = async () => {
     const res = await fetch('/api/personas')
     const data = await res.json()
+    setData(shufflePersonas(data))
+  }
+
+  const fetchPersonasWithContext = async () => {
+    const res = await fetch('/api/personas-context')
+    const data = await res.json()
     setData(data)
   }
 
   useEffect(() => {
-    fetchPersonas()
+    if (hasContext) {
+      fetchPersonasWithContext()
+    } else {
+      fetchPersonas()
+    }
   }, [])
 
   const start = () => {
     setIsStarted(true)
     goToNextPerson()
+  }
+
+  const skip = () => {
+    setSelectedImage("unsure")
+    setResponses([
+      ...responses, 
+      {
+        time: stopwatch.getElapsedStartedTime(),
+        correctAnswer: data[nameIndex].id,
+        selectedAnswer: -1
+      }
+    ])
+
+    stopwatch.stop()
+    setTimeout(goToNextPerson, 2000)
   }
 
   const selectImage = (src: string) => {
@@ -130,7 +162,7 @@ export default function FaceSelection({ page, goToNextPage, setTrialResponses }:
     return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: 36 }}>
       <div>
-        {page === 3 
+        {hasContext 
           ? "You have completed both trials. Click continue to view your results."
           : "Click the continue button to proceed to the next trial."
         }
@@ -169,7 +201,7 @@ export default function FaceSelection({ page, goToNextPage, setTrialResponses }:
                       src={image.src}
                       alt="face"
                       style={{ 
-                        cursor: 'pointer', 
+                        cursor: selectedImage ? 'auto' : 'pointer', 
                         height: 'calc(33% - 2px)', 
                         width: 'calc(33% - 2px)', 
                         border: selectedImage === image.src ? "5px solid blue" : "none" 
@@ -179,7 +211,7 @@ export default function FaceSelection({ page, goToNextPage, setTrialResponses }:
           </div>
 
           <div style={{ marginTop: 24, width: gridWidth }}>
-              <Button fullWidth variant="contained">I'm not sure</Button>
+              <Button disabled={!!selectedImage} fullWidth variant="contained" onClick={skip}>I'm not sure</Button>
           </div>
         </div>
       )}

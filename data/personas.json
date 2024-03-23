@@ -2,7 +2,7 @@
     {
         "id": 0,
         "name": "Malik",
-        "image": "male_white_1",
+        "image": "t1_male_white_1",
         "gender": "male",
         "race": "white",
         "emotionalValency": "positive",
@@ -11,7 +11,7 @@
     {
         "id": 1,
         "name": "Shoshana",
-        "image": "female_white_1",
+        "image": "t1_female_white_1",
         "gender": "female",
         "race": "white",
         "emotionalValency": "positive",
@@ -20,7 +20,7 @@
     {
         "id": 2,
         "name": "Stephania",
-        "image": "female_asian_1",
+        "image": "t1_female_asian_1",
         "gender": "female",
         "race": "asian",
         "emotionalValency": "positive",
@@ -31,7 +31,7 @@
     {
         "id": 3,
         "name": "Joey",
-        "image": "male_white_2",
+        "image": "t1_male_white_2",
         "gender": "male",
         "race": "white",
         "emotionalValency": "positive",
@@ -40,7 +40,7 @@
     {
         "id": 4,
         "name": "Clara",
-        "image": "female_white_2",
+        "image": "t1_female_white_2",
         "gender": "female",
         "race": "white",
         "emotionalValency": "positive",
@@ -49,7 +49,7 @@
     {
         "id": 5,
         "name": "Grace",
-        "image": "female_asian_2",
+        "image": "t1_female_asian_2",
         "gender": "female",
         "race": "asian",
         "emotionalValency": "positive",
@@ -59,7 +59,7 @@
     {
         "id": 6,
         "name": "Fannie",
-        "image": "female_asian_3",
+        "image": "t1_female_asian_3",
         "gender": "female",
         "race": "asian",
         "emotionalValency": "positive",
@@ -68,7 +68,7 @@
     {
         "id": 7,
         "name": "Henrietta",
-        "image": "female_white_3",
+        "image": "t1_female_white_3",
         "gender": "female",
         "race": "white",
         "emotionalValency": "positive",
@@ -77,7 +77,7 @@
     {
         "id": 8,
         "name": "George",
-        "image": "male_white_3",
+        "image": "t1_male_white_3",
         "gender": "male",
         "race": "white",
         "emotionalValency": "positive",

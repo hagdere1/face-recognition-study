@@ -20,7 +20,7 @@ const NEXT_PAGE = {
 }
 
 export default function Home() {
-  const [page, setPage] = useState(0)
+  const [page, setPage] = useState(1)
 
   const [trial1Responses, setTrial1Responses] = useState([])
   const [trial2Responses, setTrial2Responses] = useState([])
@@ -57,7 +57,7 @@ export default function Home() {
       )}
 
       {page === PAGE.FACE_SELECTION_1 && (
-        <FaceSelection page={PAGE.FACE_SELECTION_1} goToNextPage={goToNextPage} setTrialResponses={setTrial1Responses} />
+        <FaceSelection hasContext={false} goToNextPage={goToNextPage} setTrialResponses={setTrial1Responses} />
       )}
 
       {page === PAGE.SLIDESHOW_2 && (
@@ -65,7 +65,7 @@ export default function Home() {
       )}
 
       {page === PAGE.FACE_SELECTION_2 && (
-        <FaceSelection page={PAGE.FACE_SELECTION_2} goToNextPage={goToNextPage} setTrialResponses={setTrial2Responses} />
+        <FaceSelection hasContext={true} goToNextPage={goToNextPage} setTrialResponses={setTrial2Responses} />
       )}
 
       {page === PAGE.RESULTS && (
