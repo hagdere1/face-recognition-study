@@ -7,7 +7,7 @@
         "race": "black",
         "emotionalValency": "positive",
         "context": {
-            "sentence": "Tasha enjoys working with her uncles",
+            "sentence": "Tasha enjoys working with her uncles.",
             "hasFamily": true
         }
     },
@@ -19,7 +19,7 @@
         "race": "black",
         "emotionalValency": "positive",
         "context": {
-            "sentence": "Michelle loves when her baby brother hugs her",
+            "sentence": "Michelle loves when her baby brother hugs her.",
             "hasFamily": true
         }
     },
@@ -31,7 +31,7 @@
         "race": "hispanic",
         "emotionalValency": "positive",
         "context": {
-            "sentence": "Maria makes sure her puppy is fed every night",
+            "sentence": "Maria makes sure her puppy is fed every night.",
             "hasFamily": true
         }
     },
@@ -44,7 +44,7 @@
         "race": "hispanic",
         "emotionalValency": "positive",
         "context": {
-            "sentence": "Janet enjoys working with his uncles",
+            "sentence": "Janet made a lot of friends in high school.",
             "hasFamily": true
         }
     },
@@ -68,7 +68,7 @@
         "race": "black",
         "emotionalValency": "positive",
         "context": {
-            "sentence": "Cedric enjoys walking his dogs",
+            "sentence": "Cedric's aunts and uncles play board games with him.",
             "hasFamily": true
         }
     },
@@ -76,12 +76,12 @@
     {
         "id": 15,
         "name": "Garfield",
-        "image": "t2_male_black_3",
+        "image": "t2_male_black_2",
         "gender": "male",
         "race": "black",
         "emotionalValency": "positive",
         "context": {
-            "sentence": "Garfield enjoys working with his uncles",
+            "sentence": "Garfield loves rocking his newborn baby to sleep.",
             "hasFamily": true
         }
     },
@@ -93,7 +93,7 @@
         "race": "hispanic",
         "emotionalValency": "positive",
         "context": {
-            "sentence": "Marcus enjoys working with his uncles",
+            "sentence": "Marcus works in the same field as his cousin.",
             "hasFamily": true
         }
     },
@@ -105,7 +105,7 @@
         "race": "hispanic",
         "emotionalValency": "positive",
         "context": {
-            "sentence": "Anthony enjoys working with his uncles",
+            "sentence": "Anthony has the same name as his cousin.",
             "hasFamily": true
         }
     }

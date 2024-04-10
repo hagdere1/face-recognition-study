@@ -174,7 +174,7 @@ export default function FaceSelection({ hasContext, goToNextPage, setTrialRespon
   const examplePersona = data[nameIndex]
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 36 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 36, maxWidth: 700 }}>
       {!isStarted && (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <div>

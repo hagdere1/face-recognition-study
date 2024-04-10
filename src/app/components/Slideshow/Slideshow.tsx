@@ -115,8 +115,8 @@ export default function Slideshow({ hasContext, goToNextPage }: SlideshowProps) 
               key={getImageSrc()}
               src={getImageSrc()}
               alt="face-image"
-              width={180}
-              height={180}
+              width={260}
+              height={260}
             />
           </div>
         </div>

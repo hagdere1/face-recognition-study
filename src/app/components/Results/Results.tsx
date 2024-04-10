@@ -34,7 +34,7 @@ export default function Results({ trial1Responses, trial2Responses }: ResultsPro
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 36 }}>
-            <div style={{ fontSize: 20, marginBottom: 24, color: 'grey' }}><strong>Results</strong></div>
+            <h2 style={{ marginBottom: 24, color: 'grey' }}>Results</h2>
 
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 24, paddingBottom: 30, backgroundColor: '#eee', borderRadius: 8, width: 300 }}>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 24 }}>
