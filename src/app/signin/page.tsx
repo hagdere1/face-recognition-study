@@ -7,37 +7,32 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useState } from 'react';
+import { useAuth } from '../AuthProvider';
+import { useRouter } from 'next/navigation';
 
 const whitelistedUsers = [
     'hgagdere@gmail.com',
     'michael@yahoo.com'
 ]
 
-type LoginProps = {
-    setUser: (value: any) => void
-}
-
-export default function Login({ setUser }: LoginProps) {
+export default function Login() {
     const [email, setEmail] = useState('')
 
-    const handleSubmit = async (e: any) => {
-        e.preventDefault()
-        // const res = await fetch('/api/login', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({ email }),
-        // })
+    const { sendAuthEmail, status, user } = useAuth();
 
-        if (whitelistedUsers.includes(email)) {
-            setUser({
-                email,
-                role: 'user',
-                group: 'orphan',
-                step: 2
-            })
+    const router = useRouter();
+
+    if (status === 'authenticated') {
+        if (user && user.role === 'admin') {
+            router.replace("/admin");
+        } else {
+            router.replace("/");
         }
+    }
+
+    const signIn = async (e: any) => {
+        e.preventDefault()
+        await sendAuthEmail(email)
     }
 
     return (
@@ -55,7 +50,7 @@ export default function Login({ setUser }: LoginProps) {
             <Typography component="h2" variant="h5">
                 Sign in
             </Typography>
-            <Box component="form" onSubmit={handleSubmit} noValidate style={{ marginTop: 24, padding: 24, backgroundColor: '#eee', borderRadius: 6, width: 360 }}>
+            <Box component="form" onSubmit={signIn} noValidate style={{ marginTop: 24, padding: 24, backgroundColor: '#eee', borderRadius: 6, width: 360 }}>
                 <TextField
                     margin="normal"
                     fullWidth

@@ -1,26 +1,30 @@
 'use client'
-import { useState } from "react";
-import Login from "./components/Login";
-import Routes from "./components/Routes";
+import { ReactNode } from "react";
+import { useAuth } from "./AuthProvider";
+import { useRouter } from "next/navigation";
+import LoggedInRoutes from "./components/LoggedInRoutes";
 
-type User = {
-  email: string,
-  role: string,
-  group: string,
-  step: number,
-  results: {
-    preTrial: [],
-    trial1: [],
-    trial2: [],
-    postTrial: []
+export function AuthManager({ children }: { children: ReactNode | ReactNode[] }) {
+  const { status } = useAuth();
+
+  const router = useRouter();
+
+  if (status === "loading") {
+    return null;
   }
+
+  if (status === "unauthenticated") {
+    router.push("/signin");
+    return null;
+  }
+  
+  return <>{children}</>;
 }
 
-export default function App() {
-  const [user, setUser] = useState<User>()
-
-  if (!user) {
-    return <Login setUser={setUser} />
-  }
-  return <Routes currentPage={user.step} />
+export default function App () {
+  return (
+    <AuthManager>
+      <LoggedInRoutes />
+    </AuthManager>
+  )
 }

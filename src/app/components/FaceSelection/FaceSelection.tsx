@@ -6,9 +6,10 @@ import Button from '@mui/material/Button';
 import { useStopwatch } from 'react-use-precision-timer';
 
 type Response = {
+  isCorrect: boolean,
   time: number,
-  correctAnswer: number,
-  selectedAnswer: number
+  persona: Persona,
+  selectedPersonaId: number | null
 }
 
 type Persona = {
@@ -103,6 +104,12 @@ export default function FaceSelection({ hasContext, goToNextPage, setTrialRespon
     }
   }, [])
 
+  useEffect(() => {
+    if (data.length && responses.length === data.length) {
+      setTrialResponses(responses)
+    }
+  }, [responses.length])
+
   const start = () => {
     setIsStarted(true)
     goToNextPerson()
@@ -113,9 +120,10 @@ export default function FaceSelection({ hasContext, goToNextPage, setTrialRespon
     setResponses([
       ...responses, 
       {
+        isCorrect: false,
         time: stopwatch.getElapsedStartedTime(),
-        correctAnswer: data[nameIndex].id,
-        selectedAnswer: -1
+        persona: data[nameIndex],
+        selectedPersonaId: null
       }
     ])
 
@@ -125,13 +133,18 @@ export default function FaceSelection({ hasContext, goToNextPage, setTrialRespon
 
   const selectImage = (src: string) => {
     const imageName = src.split('/').pop()?.split('.')[0]
+    const persona = data[nameIndex]
+    const selectedPersona = data.find(persona => persona.image === imageName) as Persona
+
+    console.log('setResponses')
 
     setResponses([
       ...responses, 
       {
+        isCorrect: persona.id === selectedPersona.id,
         time: stopwatch.getElapsedStartedTime(),
-        correctAnswer: data[nameIndex].id,
-        selectedAnswer: (data.find(persona => persona.image === imageName) as Persona).id
+        persona,
+        selectedPersonaId: selectedPersona.id
       }
     ])
 
@@ -150,7 +163,7 @@ export default function FaceSelection({ hasContext, goToNextPage, setTrialRespon
         stopwatch.start()
     } else {
         setIsFinished(true)
-        setTrialResponses(responses)
+        // setTrialResponses(responses)
     }
   }
 

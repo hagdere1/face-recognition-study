@@ -4,10 +4,12 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { Button } from '@mui/material';
+import { useAuth } from '@/app/AuthProvider';
+import { SyntheticEvent, useState } from 'react';
 
 const QUESTIONS = [
     {
-        id: "current_age",
+        id: "age",
         question: "What is your current age?",
         options: [
             "18-28",
@@ -18,6 +20,7 @@ const QUESTIONS = [
         ]
     },
     {
+        id: "gender",
         question: "Which most accurately describes your gender?",
         options: [
             "Male",
@@ -27,6 +30,7 @@ const QUESTIONS = [
         ]
     },
     {
+        id: "ethnicity",
         question: "What is your ethnicity?",
         options: [
             "White (non-Hispanic)",
@@ -38,6 +42,7 @@ const QUESTIONS = [
         ]
     },
     {
+        id: "familySize",
         question: "How would you describe the size of your current family?",
         options: [
             "Small (only child)",
@@ -46,6 +51,7 @@ const QUESTIONS = [
         ]
     },
     {
+        id: "parentsMaritalStatus",
         question: "What is the marital status of your parents?",
         options: [
             "Married",
@@ -54,6 +60,7 @@ const QUESTIONS = [
         ]
     },
     {
+        id: "socialLife",
         question: "How would you describe your social life?",
         options: [
             "I keep to myself",
@@ -64,6 +71,7 @@ const QUESTIONS = [
         ]
     },
     {
+        id: "numDailyPeopleSpeaking",
         question: "Roughly how many people do you speak with, on average, each day?",
         options: [
             "Zero",
@@ -74,6 +82,7 @@ const QUESTIONS = [
         ]
     },
     {
+        id: "dailyPeopleSpeakingKnowWell",
         question: "Of the people you speak with each day, how many would you say know you well?",
         options: [
             "Zero",
@@ -83,6 +92,7 @@ const QUESTIONS = [
         ]
     },
     {
+        id: "relationshipStatus",
         question: "What is your relationship status?",
         options: [
             "Single",
@@ -93,6 +103,7 @@ const QUESTIONS = [
         ]
     },
     {
+        id: "memoryNames",
         question: "How would you rate your memory with people’s names?",
         options: [
             "Very below average",
@@ -103,6 +114,7 @@ const QUESTIONS = [
         ]
     },
     {
+        id: "memoryFaces",
         question: "How would you rate your memory with people’s faces?",
         options: [
             "Very below average",
@@ -115,6 +127,7 @@ const QUESTIONS = [
 ]
 const QUESTIONS_ORPHAN = [
     {
+        id: "adoptedAge",
         question: "At what age were you adopted/displaced?",
         options: [
             "1-3",
@@ -124,6 +137,7 @@ const QUESTIONS_ORPHAN = [
         ]
     },
     {
+        id: "adoptedTransitionProcess",
         question: "How would you best describe the transition process?",
         options: [
             "Simple",
@@ -133,24 +147,37 @@ const QUESTIONS_ORPHAN = [
     },
 ]
 
-export default function PreTrialSurvey() {
-    const isOrphan = true
+type PreTrialSurveyProps = {
+    setPreTrialResponses: (values: any) => void
+}
+
+export default function PreTrialSurvey({ setPreTrialResponses }: PreTrialSurveyProps) {
+    const { user } = useAuth()
 
     const allQuestions = [
         ...QUESTIONS,
-        ...(isOrphan ? QUESTIONS_ORPHAN : [])
+        ...(user?.group === 'orphan' ? QUESTIONS_ORPHAN : [])
     ]
+
+    const initialState = allQuestions.map(question => ({ id: question.id, question: question.question, response: '' }))
+
+    const [responses, setResponses] = useState(initialState)
+
+    const handleChange = (event: SyntheticEvent<Element, Event>, questionIndex: number) => {
+        const updatedResponses = [...responses]
+        updatedResponses[questionIndex].response = (event.target as HTMLInputElement).value
+        setResponses(updatedResponses);
+    };    
 
     const submit = () => {
         const isValid = validate()
         if (isValid) {
-            console.log('Submit and continue')
+            setPreTrialResponses(responses)
         }
     }
 
     const validate = () => {
-        console.log('Please complete all questions.')
-        return true
+        return responses.every(response => response.response)
     }
 
     return (
@@ -159,19 +186,19 @@ export default function PreTrialSurvey() {
 
             <div style={{ display: 'flex', justifyContent: 'flex-start', width: '100%' }}>
                 <FormControl>
-                    {allQuestions.map(({ question, options }) => (
+                    {allQuestions.map(({ question, options }, questionIndex) => (
                         <div key={question} style={{ marginBottom: 36 }}>
                             <FormLabel id="demo-radio-buttons-group-label" style={{ marginBottom: 8 }}>{question}</FormLabel>
                             <RadioGroup
                                 aria-labelledby="demo-radio-buttons-group-label"
                                 name="radio-buttons-group"
                             >
-                                {options.map((option) => <FormControlLabel key={`${question}_${option}`} value={option} control={<Radio />} label={option} />)}
+                                {options.map((option) => <FormControlLabel key={`${question}_${option}`} value={option} control={<Radio />} label={option} onChange={(e) => handleChange(e, questionIndex)} />)}
                             </RadioGroup>
                         </div>
                     ))}
 
-                    <Button onClick={submit} style={{ marginTop: 24 }} variant='contained'>Submit</Button>
+                    <Button disabled={!validate()} onClick={submit} style={{ marginTop: 24 }} variant='contained'>Submit</Button>
                 </FormControl>
             </div>
         </div>
