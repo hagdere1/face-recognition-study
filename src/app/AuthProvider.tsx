@@ -24,7 +24,8 @@ const AuthCtx = createContext<{
   signOut(): void;
   status: authStatus;
   firebaseUser: FirebaseUser | null;
-  user: User | null
+  user: User | null;
+  refetchUser(): void
 }>({
     async sendAuthEmail(email: string) {},
     status: "loading",
@@ -33,7 +34,8 @@ const AuthCtx = createContext<{
     },
     signOut() {},
     firebaseUser: null,
-    user: null
+    user: null,
+    refetchUser() {}
 });
 
 export const useAuth = () => useContext(AuthCtx);
@@ -126,6 +128,7 @@ const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
         firebaseUser: auth.currentUser,
         user: user ? user as User : null,
         signOut,
+        refetchUser: () => fetchUser(user?.email as string)
       }}
     >
       {children}

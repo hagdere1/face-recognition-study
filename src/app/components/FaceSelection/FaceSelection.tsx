@@ -65,9 +65,7 @@ export default function FaceSelection({ hasContext, setTrialResponses }: FaceSel
   const gridWidth = 500
 
   useEffect(() => {
-    console.log('DATA: ', data)
     if (data.length && !isStarted) {
-console.log("START")
       setIsStarted(true)
       goToNextPerson()
     }
@@ -159,8 +157,6 @@ console.log("START")
 
   const goToNextPerson = () => {
     setSelectedImage("")
-
-    console.log('GO TO NEXT PERSON')
 
     if (nameIndex + 1 < data.length) {
       setNameIndex(currentValue => currentValue + 1)

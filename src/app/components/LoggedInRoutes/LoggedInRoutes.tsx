@@ -14,7 +14,7 @@ import { Button } from "@mui/material";
 export default function LoggedInRoutes() {
   const { user } = useAuth()
 
-  const { stepIndex, proceed, showQuitDialog, toggleQuitDialog } = useNavigationContext()
+  const { stepIndex, proceed, showQuitDialog, quit } = useNavigationContext()
 
   const [responses, setResponses] = useState({
       surveyPreTrial: null,
@@ -34,7 +34,6 @@ export default function LoggedInRoutes() {
 
   const setPreTrialResponses = async (values: any) => {
     try {
-      console.log('USER: ', user)
       const res = await fetch(`http://localhost:3000/api/users/${user?._id}/survey-responses`, {
         method: 'PUT', 
         headers: {
@@ -124,8 +123,7 @@ export default function LoggedInRoutes() {
   }
 
   const quitStudy = async () => {
-    // TO DO: API call to set user.quit to true
-    toggleQuitDialog(false)
+    quit()
   }
 
   if (!user) {

@@ -11,8 +11,6 @@ export async function GET(req: Request) {
         trial2: { $ne: null }
     }).exec()
 
-    console.log('users: ', users)
-
     const numOrphans = users.filter(user => user.group === 'orphan').length
     // const numControl = users.filter(user => user.group === 'control').length
     const numControl = users.length - numOrphans
