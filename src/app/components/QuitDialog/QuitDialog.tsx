@@ -12,7 +12,7 @@ export default function QuitDialog({ confirm, isOpen }: QuitDialog) {
     return (
         <Dialog open={isOpen}>
             <div style={{ padding: 36 }}>
-                <p>You have selected no to the prior screen. Are you unable to continue the study?</p>
+                <p>You have selected no. Are you unable to continue the study?</p>
                 <br />
                 <p>Note: If you answer yes, you can no longer participate in this study. There is no penalty for concluding this assignment. Do you wish to terminate?</p>
 

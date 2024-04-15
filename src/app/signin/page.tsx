@@ -10,11 +10,6 @@ import { useState } from 'react';
 import { useAuth } from '../AuthProvider';
 import { useRouter } from 'next/navigation';
 
-const whitelistedUsers = [
-    'hgagdere@gmail.com',
-    'michael@yahoo.com'
-]
-
 export default function Login() {
     const [email, setEmail] = useState('')
     const [emailSent, setEmailSent] = useState(false)

@@ -22,6 +22,6 @@ export default function SignInConfirm() {
     }, []);
 
     return (
-        <div>Signing in...</div>
+        null
     )
 }

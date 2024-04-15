@@ -1,17 +1,18 @@
-import { useAuth } from "@/app/AuthProvider"
 import { useNavigationContext } from "@/app/NavigationProvider"
+import { NUM_RESPONSES } from "@/app/constants/responses"
 import { Button } from "@mui/material"
 
 type ResultsProps = {
-    showNextButton: boolean
+    trial1Results: any,
+    trial2Results: any
 }
 
-const NUM_RESPONSES = 9
-
-export default function Results({ showNextButton }: ResultsProps) {
-    const { user } = useAuth()
-
+export default function Results({ trial1Results, trial2Results }: ResultsProps) {
     const { proceed } = useNavigationContext()
+
+    if (!trial1Results || !trial2Results) {
+        return null
+    }
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 36 }}>
@@ -23,15 +24,15 @@ export default function Results({ showNextButton }: ResultsProps) {
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 24, paddingBottom: 30, backgroundColor: '#eee', borderRadius: 8, width: 300 }}>
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 24 }}>
                             <div style={{ marginBottom: 4}}><strong>Accuracy</strong></div>
-                            <div>{Math.round(user?.trial1.results.accuracy * 100)}%</div>
+                            <div>{Math.round(trial1Results.accuracy * 100)}%</div>
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 24}}>
                             <div style={{ marginBottom: 4}}><strong>Average Time</strong></div>
-                            <div>{(user?.trial1.results.time / NUM_RESPONSES / 1000).toFixed(1)} seconds</div>
+                            <div>{(trial1Results.time / NUM_RESPONSES / 1000).toFixed(1)} seconds</div>
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                             <div style={{ marginBottom: 4}}><strong>Total Time</strong></div>
-                            <div>{(user?.trial1.results.time / 1000).toFixed(1)} seconds</div>
+                            <div>{(trial1Results.time / 1000).toFixed(1)} seconds</div>
                         </div>
                     </div>
                 </div>
@@ -41,25 +42,23 @@ export default function Results({ showNextButton }: ResultsProps) {
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 24, paddingBottom: 30, backgroundColor: '#eee', borderRadius: 8, width: 300 }}>
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 24 }}>
                             <div style={{ marginBottom: 4}}><strong>Accuracy</strong></div>
-                            <div>{Math.round(user?.trial2.results.accuracy * 100)}%</div>
+                            <div>{Math.round(trial2Results.accuracy * 100)}%</div>
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 24}}>
                             <div style={{ marginBottom: 4}}><strong>Average Time</strong></div>
-                            <div>{(user?.trial2.results.time / NUM_RESPONSES / 1000).toFixed(1)} seconds</div>
+                            <div>{(trial2Results.time / NUM_RESPONSES / 1000).toFixed(1)} seconds</div>
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                             <div style={{ marginBottom: 4}}><strong>Total Time</strong></div>
-                            <div>{(user?.trial2.results.time / 1000).toFixed(1)} seconds</div>
+                            <div>{(trial2Results.time / 1000).toFixed(1)} seconds</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {showNextButton && (
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 24 }}>
-                    <Button variant="contained" onClick={proceed} style={{ marginTop: 24 }}>Continue</Button>
-                </div>
-            )}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 24 }}>
+                <Button variant="contained" onClick={proceed} style={{ marginTop: 24 }}>Continue</Button>
+            </div>
         </div>
     )
 }

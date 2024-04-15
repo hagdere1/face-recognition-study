@@ -1,19 +1,14 @@
 import { NextResponse } from 'next/server';
 import UserDetail from '../../../../models/UserDetail';
 import connectDB from '../../../../db';
+import { auth } from '../../firebase-admin';
+import { headers } from "next/headers"
 
 connectDB()
 
-export async function GET(req: Request) {
-    // Get all the users
-    const users = await UserDetail.find({
-        trial1: { $ne: null },
-        trial2: { $ne: null }
-    }).exec()
-
+const getResults = (users: any[]) => {
     const numOrphans = users.filter(user => user.group === 'orphan').length
-    // const numControl = users.filter(user => user.group === 'control').length
-    const numControl = users.length - numOrphans
+    const numControl = users.filter(user => user.group === 'control').length
 
     const runningTotals = {
         orphan: {
@@ -24,7 +19,8 @@ export async function GET(req: Request) {
             trial2: {
                 time: 0,
                 accuracy: 0
-            }
+            },
+            count: numOrphans
         },
         control: {
             trial1: {
@@ -34,7 +30,8 @@ export async function GET(req: Request) {
             trial2: {
                 time: 0,
                 accuracy: 0
-            }
+            },
+            count: numControl
         }
     }
 
@@ -66,5 +63,34 @@ export async function GET(req: Request) {
     averages.control.trial2.time = runningTotals.control.trial2.time / numControl
     averages.control.trial2.accuracy = runningTotals.control.trial2.accuracy / numControl
 
-    return NextResponse.json(averages, { status: 200 })
+    return averages
+}
+
+export async function GET(req: Request) {
+    const referer = headers().get("authorization");
+  
+    if (!referer) {
+        return NextResponse.json({ error: 'Please include id token' }, { status: 401 });
+    }
+
+    try {
+        const { uid } = await auth.verifyIdToken(referer.replace('Bearer ', ''));
+        
+        if (!uid) {
+            throw Error('Unauthenticated')
+        }
+
+        // Get all the users
+        const users = await UserDetail.find({
+            role: "user",
+            trial1: { $ne: null },
+            trial2: { $ne: null }
+        }).exec()
+
+        const averages = getResults(users)
+
+        return NextResponse.json(averages, { status: 200 })
+    } catch (error) {
+        console.log(error)
+    }
 }

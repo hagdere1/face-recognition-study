@@ -9,6 +9,7 @@ import QuitDialog from "../QuitDialog";
 import Instructions from "../Instructions";
 import { INSTRUCTIONS } from '../../constants/instructions'
 import { useNavigationContext } from "@/app/NavigationProvider";
+import Cookies from 'js-cookie'
 import { Button } from "@mui/material";
 
 export default function LoggedInRoutes() {
@@ -37,6 +38,7 @@ export default function LoggedInRoutes() {
       const res = await fetch(`http://localhost:3000/api/users/${user?._id}/survey-responses`, {
         method: 'PUT', 
         headers: {
+            Authorization: `Bearer ${Cookies.get(process.env.NEXT_PUBLIC_AUTH_TOKEN_COOKIE_NAME || "")}`,
             'Content-type': 'application/json'
         },
         body: JSON.stringify({ surveyPreTrial: { responses: values } })
@@ -60,6 +62,7 @@ export default function LoggedInRoutes() {
       const res = await fetch(`http://localhost:3000/api/users/${user?._id}/trial-responses`, {
         method: 'PUT', 
         headers: {
+            Authorization: `Bearer ${Cookies.get(process.env.NEXT_PUBLIC_AUTH_TOKEN_COOKIE_NAME || "")}`,
             'Content-type': 'application/json'
         },
         body: JSON.stringify({ trial1: { responses: values } })
@@ -71,7 +74,6 @@ export default function LoggedInRoutes() {
           ...responses,
           trial1: data
         })
-        proceed()
       }
     } catch (err) {
       console.log(err)
@@ -83,6 +85,7 @@ export default function LoggedInRoutes() {
       const res = await fetch(`http://localhost:3000/api/users/${user?._id}/trial-responses`, {
         method: 'PUT', 
         headers: {
+            Authorization: `Bearer ${Cookies.get(process.env.NEXT_PUBLIC_AUTH_TOKEN_COOKIE_NAME || "")}`,
             'Content-type': 'application/json'
         },
         body: JSON.stringify({ trial2: { responses: values } })
@@ -105,6 +108,7 @@ export default function LoggedInRoutes() {
       const res = await fetch(`http://localhost:3000/api/users/${user?._id}/survey-responses`, {
         method: 'PUT', 
         headers: {
+            Authorization: `Bearer ${Cookies.get(process.env.NEXT_PUBLIC_AUTH_TOKEN_COOKIE_NAME || "")}`,
             'Content-type': 'application/json'
         },
         body: JSON.stringify({ surveyPostTrial: { responses: values } })
@@ -116,6 +120,7 @@ export default function LoggedInRoutes() {
           ...responses,
           surveyPostTrial: data
         })
+        proceed()
       }
     } catch (err) {
       console.log(err)
@@ -145,7 +150,8 @@ export default function LoggedInRoutes() {
     <Slideshow hasContext={true} />,
     <FaceSelection hasContext={true} setTrialResponses={setTrial2Responses} />,
     <Instructions text={INSTRUCTIONS.T2_3} />,
-    <Results showNextButton={!responses.surveyPostTrial} />,
+    // @ts-ignore
+    <Results trial1Results={responses.trial1?.results} trial2Results={responses.trial2?.results} />,
     <Instructions text={INSTRUCTIONS.POSTTRIAL_SURVEY} />,
     <Survey setSurveyResponses={setPostTrialResponses} isPreTrial={false} />,
     <Instructions text={INSTRUCTIONS.END} hideButtons />
@@ -155,14 +161,11 @@ export default function LoggedInRoutes() {
     <main style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: 36}}>
       <h1>Face Recognition Study</h1>
       {/* {user.role === 'admin' && stepIndex < STEPS.length - 1 && (
-        <Button onClick={proceed}>Skip</Button>
-      )} */}
-      {stepIndex < STEPS.length - 1 && (
         <>
           <Button onClick={proceed}>Skip</Button>
           <div><strong>STEP INDEX: {stepIndex}</strong></div>
         </>
-      )}
+      )} */}
 
       {user.quit ? <Instructions text={INSTRUCTIONS.QUIT} hideButtons /> : STEPS[stepIndex]}
 

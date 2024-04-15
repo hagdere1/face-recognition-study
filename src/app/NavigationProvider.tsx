@@ -1,5 +1,6 @@
-import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
+import { createContext, PropsWithChildren, useContext, useState } from "react";
 import { useAuth } from "./AuthProvider";
+import Cookies from 'js-cookie'
 
 const NavigationContext = createContext<{
     showQuitDialog: boolean;
@@ -23,14 +24,7 @@ const NavigationProvider = ({ children }: PropsWithChildren<{}>) => {
     const [stepIndex, setStepIndex] = useState(0)
     const [showQuitDialog, setShowQuitDialog] = useState(false)
 
-    useEffect(() => {
-        if (user) {
-            setStepIndex(user.step)
-        }
-    }, [user])
-
     const proceed = () => {
-        // TO DO: SAVE STEP INDEX TO API, THEN SET STATE IN CALLBACK
         setStepIndex(prevStepIndex => prevStepIndex + 1)
     };
     
@@ -38,10 +32,9 @@ const NavigationProvider = ({ children }: PropsWithChildren<{}>) => {
         try {
             await fetch(`http://localhost:3000/api/users/${user?._id}/quit`, {
                 method: 'PUT',
-                // headers: {
-                //     'Content-type': 'application/json'
-                // },
-                // body: JSON.stringify(member)
+                headers: {
+                    Authorization: `Bearer ${Cookies.get(process.env.NEXT_PUBLIC_AUTH_TOKEN_COOKIE_NAME || "")}`
+                }
             })
         } catch (err) {
             console.log(err)

@@ -34,8 +34,7 @@ const UserDetailSchema = new mongoose.Schema({
     surveyPostTrial: { type: SurveySchema, default: null },
     trial1: { type: TrialSchema, default: null },
     trial2: { type: TrialSchema, default: null },
-    quit: { type: Boolean, default: false },
-    step: { type: Number, default: 0 }
+    quit: { type: Boolean, default: false }
 }, { timestamps: true })
 
 export default mongoose.models.UserDetail || mongoose.model('UserDetail', UserDetailSchema)
