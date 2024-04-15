@@ -17,6 +17,7 @@ const whitelistedUsers = [
 
 export default function Login() {
     const [email, setEmail] = useState('')
+    const [emailSent, setEmailSent] = useState(false)
 
     const { sendAuthEmail, status, user } = useAuth();
 
@@ -33,6 +34,7 @@ export default function Login() {
     const signIn = async (e: any) => {
         e.preventDefault()
         await sendAuthEmail(email)
+        setEmailSent(true)
     }
 
     return (
@@ -50,27 +52,37 @@ export default function Login() {
             <Typography component="h2" variant="h5">
                 Sign in
             </Typography>
-            <Box component="form" onSubmit={signIn} noValidate style={{ marginTop: 24, padding: 24, backgroundColor: '#eee', borderRadius: 6, width: 360 }}>
-                <TextField
-                    margin="normal"
-                    fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                    autoFocus
-                    onChange={(e) => setEmail(e.target.value)}
-                    value={email}
-                    style={{ backgroundColor: '#fff' }}
-                />
-                <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
-                >
-                Sign In
-                </Button>
+            <Box component="form" onSubmit={signIn} noValidate style={{ marginTop: 24, padding: 24, backgroundColor: '#eee', borderRadius: 6, width: 380 }}>
+                {!emailSent && (
+                    <>
+                        <TextField
+                            margin="normal"
+                            fullWidth
+                            id="email"
+                            label="Email Address"
+                            name="email"
+                            autoComplete="email"
+                            autoFocus
+                            onChange={(e) => setEmail(e.target.value)}
+                            value={email}
+                            style={{ backgroundColor: '#fff' }}
+                        />
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                        >
+                        Sign In
+                        </Button>
+                    </>
+                )}
+
+                {(emailSent && (
+                    <>
+                        A sign-in link has been sent to your email.
+                    </>
+                ))}
             </Box>
         </Box>
       </Container>

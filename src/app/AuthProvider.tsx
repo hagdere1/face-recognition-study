@@ -53,7 +53,6 @@ const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
                 handleCodeInApp: true
             })
             window.localStorage.setItem('orphanFaceRecognitionStudyEmail', email);
-            alert("A sign-in link has been sent to your email.")
         } catch(error: any) {
             console.log(error);
         }
