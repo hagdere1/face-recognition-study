@@ -1,13 +1,4 @@
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
-import { Button } from '@mui/material';
-import { useAuth } from '@/app/AuthProvider';
-import { SyntheticEvent, useState } from 'react';
-
-const QUESTIONS = [
+export const PRETRIAL_QUESTIONS = [
     {
         id: "age",
         question: "What is your current age?",
@@ -125,7 +116,8 @@ const QUESTIONS = [
         ]
     }
 ]
-const QUESTIONS_ORPHAN = [
+export const PRETRIAL_QUESTIONS_ORPHAN = [
+    ...PRETRIAL_QUESTIONS,
     {
         id: "adoptedAge",
         question: "At what age were you adopted/displaced?",
@@ -146,61 +138,81 @@ const QUESTIONS_ORPHAN = [
         ]
     },
 ]
-
-type PreTrialSurveyProps = {
-    setPreTrialResponses: (values: any) => void
-}
-
-export default function PreTrialSurvey({ setPreTrialResponses }: PreTrialSurveyProps) {
-    const { user } = useAuth()
-
-    const allQuestions = [
-        ...QUESTIONS,
-        ...(user?.group === 'orphan' ? QUESTIONS_ORPHAN : [])
-    ]
-
-    const initialState = allQuestions.map(question => ({ id: question.id, question: question.question, response: '' }))
-
-    const [responses, setResponses] = useState(initialState)
-
-    const handleChange = (event: SyntheticEvent<Element, Event>, questionIndex: number) => {
-        const updatedResponses = [...responses]
-        updatedResponses[questionIndex].response = (event.target as HTMLInputElement).value
-        setResponses(updatedResponses);
-    };    
-
-    const submit = () => {
-        const isValid = validate()
-        if (isValid) {
-            setPreTrialResponses(responses)
-        }
+export const POSTTRIAL_QUESTIONS = [
+    {
+        id: "difficulty_trial1",
+        question: "How difficult would you say the first test was?",
+        options: [
+            "Very easy",
+            "Easy",
+            "Average",
+            "Difficult",
+            "Very difficult"
+        ]
+    },
+    {
+        id: "difficulty_trial2",
+        question: "How difficult would you say the second test was?",
+        options: [
+            "Very easy",
+            "Easy",
+            "Average",
+            "Difficult",
+            "Very difficult"
+        ]
+    },
+    {
+        id: "performance_trial1",
+        question: "How do you think you performed on the first task?",
+        options: [
+            "Very above average",
+            "Above average",
+            "Average",
+            "Below average",
+            "Very below average"
+        ]
+    },
+    {
+        id: "performance_trial2",
+        question: "How do you think you performed on the second task?",
+        options: [
+            "Very above average",
+            "Above average",
+            "Average",
+            "Below average",
+            "Very below average"
+        ]
+    },
+    {
+        id: "memory_strategies",
+        question: "Did you use any memory strategies to help you remember?",
+        options: [
+            "Yes",
+            "No"
+        ]
+    },
+    {
+        id: "memory_strategies_self",
+        question: "Do you believe that some of the strategies you used were connected to your own beliefs, preferences, and ideas?",
+        options: [
+            "Yes",
+            "No"
+        ]
+    },
+    {
+        id: "memory_strategies_people",
+        question: "If yes, do you use similar strategies when meeting new people?",
+        options: [
+            "Yes",
+            "No"
+        ]
+    },
+    {
+        id: "accuracy",
+        question: "Do you think your results accurately reflect how well you remember faces and names?",
+        options: [
+            "Yes",
+            "No"
+        ]
     }
-
-    const validate = () => {
-        return responses.every(response => response.response)
-    }
-
-    return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 36, width: 700 }}>
-            <h2 style={{ color: 'grey', marginBottom: 36 }}>Pre-Trial Survey</h2>
-
-            <div style={{ display: 'flex', justifyContent: 'flex-start', width: '100%' }}>
-                <FormControl>
-                    {allQuestions.map(({ question, options }, questionIndex) => (
-                        <div key={question} style={{ marginBottom: 36 }}>
-                            <FormLabel id="demo-radio-buttons-group-label" style={{ marginBottom: 8 }}>{question}</FormLabel>
-                            <RadioGroup
-                                aria-labelledby="demo-radio-buttons-group-label"
-                                name="radio-buttons-group"
-                            >
-                                {options.map((option) => <FormControlLabel key={`${question}_${option}`} value={option} control={<Radio />} label={option} onChange={(e) => handleChange(e, questionIndex)} />)}
-                            </RadioGroup>
-                        </div>
-                    ))}
-
-                    <Button disabled={!validate()} onClick={submit} style={{ marginTop: 24 }} variant='contained'>Submit</Button>
-                </FormControl>
-            </div>
-        </div>
-    )
-}
+]

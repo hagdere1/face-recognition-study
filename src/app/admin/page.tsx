@@ -18,6 +18,7 @@ export default function AdminView() {
     const [group, setGroup] = useState<string>('')
     const [role, setRole] = useState<string>('user')
     const [members, setMembers] = useState<Member[]>([])
+    const [results, setResults] = useState()
 
     const fetchUsers = async () => {
         try {
@@ -33,13 +34,30 @@ export default function AdminView() {
         }
     }
 
+    const fetchResults = async () => {
+        try {
+            const res = await fetch('http://localhost:3000/api/results')
+            if (!res.ok) {
+                throw new Error('Failed to fetch')
+            }
+            const data = await res.json()
+
+            setResults(data)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     useEffect(() => {
         if (user?.role === 'admin') {
             fetchUsers()
+            fetchResults()
         }
-    }, [])
+    }, [user?.role])
 
-    const createAccount = async () => {
+    const createAccount = async (e: any) => {
+        e.preventDefault()
+
         const member = {
             email,
             group: group ? group : null,
@@ -87,13 +105,56 @@ export default function AdminView() {
         return null
     }
 
+    const resultCard = (title: string, time: number, accuracy: number) => (
+        <div style={{ marginBottom: 24 }}>
+            <div style={{ marginRight: 36 }}><strong>{title}</strong></div>
+
+            <div style={{ display: 'flex' }}>
+                <div style={{ marginRight: 24 }}>
+                    <div>Accuracy:</div>
+                    <div>Time:</div>
+                </div>
+                <div>
+                    <div>{accuracy}</div>
+                    <div>{time}</div>
+                </div>
+            </div>
+        </div>
+    )
+
     return (
         <AuthManager>
             <div style={{ padding: 36, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <h1 style={{ marginBottom: 36 }}>Admin Dashboard</h1>
-                <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, width: '100%', padding: 36 }}>
-                    <div style={{ marginBottom: 36 }}>
 
+                <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, width: '100%', padding: 36, marginBottom: 36 }}>
+                    <div style={{ marginBottom: 36, width: '100%' }}>
+                        <h3>Results</h3>
+                        <div style={{ display: 'flex', marginTop: 24 }}>
+                            <div style={{ padding: 24, borderRadius: 6, width: '50%', backgroundColor: '#fff', marginRight: 36 }}>
+                                <div style={{ marginBottom: 24 }}><strong>Orphans</strong></div>
+
+                                {/* @ts-ignore */}
+                                {resultCard('Trial1', results?.orphan.trial1.time, results?.orphan.trial1.accuracy)}
+
+                                {/* @ts-ignore */}
+                                {resultCard('Trial2', results?.orphan.trial2.time, results?.orphan.trial2.accuracy)}
+                            </div>
+                            <div style={{ padding: 24, borderRadius: 6, width: '50%', backgroundColor: '#fff' }}>
+                                <div style={{ marginBottom: 24 }}><strong>Control</strong></div>
+                                
+                                {/* @ts-ignore */}
+                                {resultCard('Trial1', results?.control.trial1.time, results?.control.trial1.accuracy)}
+
+                                {/* @ts-ignore */}
+                                {resultCard('Trial2', results?.control.trial2.time, results?.control.trial2.accuracy)}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, width: '100%', padding: 36, marginBottom: 36 }}>
+                    <div>
                         <div style={{ padding: 24, borderRadius: 6, width: 300, backgroundColor: '#fff', marginRight: 36 }}>
                             <h3>Add a user</h3>
 
@@ -145,12 +206,12 @@ export default function AdminView() {
 
                     <div style={{ marginRight: 36 }}>
                         <div style={{ marginBottom: 16 }}><strong>Admins</strong></div>
-                        {members.filter(member => member.role === 'admin').map(member => <div>{member.role} - {member.email}</div>)}
+                        {members.filter(member => member.role === 'admin').map(member => <div key={member.email}>{member.role} - {member.email}</div>)}
                     </div>
 
                     <div>
                         <div style={{ marginBottom: 16 }}><strong>Participants</strong></div>
-                        {members.filter(member => member.role === 'user').map(member => <div>{member.role} - {member.email} - {member.group}</div>)}
+                        {members.filter(member => member.role === 'user').map(member => <div key={member.email}>{member.role} - {member.email} - {member.group}</div>)}
                     </div>
                 </div>
             </div>

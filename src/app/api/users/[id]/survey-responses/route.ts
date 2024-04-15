@@ -4,10 +4,10 @@ import connectDB from '../../../../../../db';
 
 connectDB()
 
-export async function PUT(req: Request, params: any) {
+export async function PUT(req: Request, { params }: any) {
     const { id } = params
     const body = await req.json()
     const key = body.surveyPreTrial ? 'surveyPreTrial' : 'surveyPostTrial'
-    const user = await UserDetail.findOneAndUpdate(id, { [key]: body[key] }, { new: true })
+    const user = await UserDetail.findOneAndUpdate({ _id: id }, { [key]: body[key] }, { new: true })
     return NextResponse.json(user, { status: 200 })
 }

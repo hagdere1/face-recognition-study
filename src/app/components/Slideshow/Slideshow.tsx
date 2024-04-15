@@ -3,6 +3,7 @@ import { images_t1, images_t2 } from '../../../utils'
 import { useEffect, useState } from "react";
 import Button from '@mui/material/Button';
 import { useTimer } from 'react-use-precision-timer';
+import { useNavigationContext } from '@/app/NavigationProvider';
 
 type Persona = {
   context?: {
@@ -19,20 +20,16 @@ type Persona = {
 
 type SlideshowProps = {
   hasContext: boolean
-  goToNextPage: () => void
 }
 
-const trial1Instructions = "You will be presented with a slideshow of faces. Each image will be accompanied by a name belonging the person. Try to remember the combination of name and face."
-const trial2Instructions = "You will now be presented with another slideshow of faces. Each image will be accompanied by a name as well as a sentence describing the person. Once again, try to remember the combination of name and face."
+export default function Slideshow({ hasContext }: SlideshowProps) {
+  const { proceed } = useNavigationContext()
 
-export default function Slideshow({ hasContext, goToNextPage }: SlideshowProps) {
   const [trialStarted, setTrialStarted] = useState(false)
   const [trialFinished, setTrialFinished] = useState(false)
   const [index, setIndex] = useState(0)
 
   const [data, setData] = useState<Persona[]>([])
-
-  const instructions = hasContext ? trial2Instructions : trial1Instructions
 
   const images = hasContext ? images_t2 : images_t1
 
@@ -48,7 +45,7 @@ export default function Slideshow({ hasContext, goToNextPage }: SlideshowProps) 
   useEffect(() => {
     if (trialFinished) {
       timer.stop()
-      goToNextPage()
+      proceed()
     }
   }, [trialFinished])
 
@@ -77,6 +74,12 @@ export default function Slideshow({ hasContext, goToNextPage }: SlideshowProps) 
     timer.start()
   }
 
+  useEffect(() => {
+    if (data && !trialStarted) {
+      start()
+    }
+  }, [data])
+
   const getImageSrc = (): string => {
     const personaImage = data[index].image
 
@@ -90,37 +93,29 @@ export default function Slideshow({ hasContext, goToNextPage }: SlideshowProps) 
   }
 
   if (!data.length) {
-    return <div style={{ marginTop: 36 }}>Loading...</div>
+    // return <div style={{ marginTop: 36 }}>Loading...</div>
+    return null
   }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', maxWidth: 700 }}>
       {!trialStarted && <h2 style={{ marginTop: 36, color: 'grey' }}>Trial {hasContext ? 2 : 1}</h2>}
 
-      {!trialStarted && (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 24 }}>
-          <div>{instructions}</div>
-          <Button variant="contained" onClick={start} style={{ marginTop: 24 }}>Start</Button>
+      <div style={{ marginTop: 36 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <h3 style={{ marginBottom: 16 }}><strong>{data[index].name}</strong></h3>
+
+          {hasContext && (<div style={{ marginBottom: 24 }}>{data[index]?.context?.sentence}</div>)}
+
+          <img
+            key={getImageSrc()}
+            src={getImageSrc()}
+            alt="face-image"
+            width={260}
+            height={260}
+          />
         </div>
-      )}
-
-      {trialStarted && (
-        <div style={{ marginTop: 36 }}>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <h3 style={{ marginBottom: 16 }}><strong>{data[index].name}</strong></h3>
-
-            {hasContext && (<div style={{ marginBottom: 24 }}>{data[index]?.context?.sentence}</div>)}
-
-            <img
-              key={getImageSrc()}
-              src={getImageSrc()}
-              alt="face-image"
-              width={260}
-              height={260}
-            />
-          </div>
-        </div>
-      )}
+      </div>
     </div>
   );
 }

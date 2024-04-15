@@ -1,6 +1,7 @@
 import { createContext, PropsWithChildren, useState, useContext, useEffect } from "react";
 import { User as FirebaseUser, isSignInWithEmailLink, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailLink} from "firebase/auth";
 import { auth } from "./firebase";
+import { useRouter  } from "next/navigation"
 
 type authStatus = "authenticated" | "unauthenticated" | "loading";
 
@@ -12,7 +13,9 @@ type User = {
   surveyPreTrial: any,
   trial1: any,
   trial2: any,
-  surveyPostTrial: any
+  surveyPostTrial: any,
+  quit: boolean,
+  step: number
 }
 
 const AuthCtx = createContext<{
@@ -38,6 +41,8 @@ export const useAuth = () => useContext(AuthCtx);
 const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
     const [status, setStatus] = useState<authStatus>("loading");
     const [user, setUser] = useState<User | null>(null)
+
+    const router = useRouter()
 
     const sendAuthEmail = async (email: string) => {
         try {
@@ -84,6 +89,7 @@ const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
   const signOut = async () => { 
     await auth.signOut();
     setUser(null)
+    router.replace('/signin')
   }
 
   const fetchUser = async (email: string) => {

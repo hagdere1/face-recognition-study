@@ -1,4 +1,3 @@
-// import personas from '../../../../data/personas.json'
 import { NextResponse } from 'next/server';
 import UserDetail from '../../../../models/UserDetail';
 import connectDB from '../../../../db';

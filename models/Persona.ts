@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
 export const PersonaSchema = new mongoose.Schema({
-    name: { type: String, required: true, unique: true },
+    name: { type: String, required: true },
     imageUrl: { type: String, required: true },
     gender: { type: String, required: true },
     race: { type: String, required: true },

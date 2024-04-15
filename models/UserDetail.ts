@@ -27,20 +27,15 @@ const TrialSchema = new mongoose.Schema({
 })
 
 const UserDetailSchema = new mongoose.Schema({
-    email: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true, index: true, sparse: true },
     role: { type: String, required: true },
     group: { type: String },
     surveyPreTrial: { type: SurveySchema, default: null },
     surveyPostTrial: { type: SurveySchema, default: null },
     trial1: { type: TrialSchema, default: null },
     trial2: { type: TrialSchema, default: null },
-    results: {
-        type: {
-            accuracy: { type: Number },
-            time: { type: Number }
-        },
-        default: null
-    }
+    quit: { type: Boolean, default: false },
+    step: { type: Number, default: 0 }
 }, { timestamps: true })
 
 export default mongoose.models.UserDetail || mongoose.model('UserDetail', UserDetailSchema)

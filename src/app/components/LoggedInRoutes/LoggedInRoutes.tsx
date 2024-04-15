@@ -1,69 +1,40 @@
 'use client'
-import { Button } from "@mui/material";
 import FaceSelection from "../FaceSelection";
-import PreTrialSurvey from "../PreTrialSurvey";
+import Survey from "../Survey";
 import Results from "../Results";
 import Slideshow from "../Slideshow/Slideshow";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/app/AuthProvider";
-
-const PAGE = {
-  PRE_TRIAL: 0,
-  SLIDESHOW_1: 1,
-  FACE_SELECTION_1: 2,
-  SLIDESHOW_2: 3,
-  FACE_SELECTION_2: 4,
-  RESULTS: 5,
-  POST_TRIAL: 6
-}
-
-const NEXT_PAGE = {
-  [PAGE.PRE_TRIAL]: PAGE.SLIDESHOW_1,
-  [PAGE.SLIDESHOW_1]: PAGE.FACE_SELECTION_1,
-  [PAGE.FACE_SELECTION_1]: PAGE.SLIDESHOW_2,
-  [PAGE.SLIDESHOW_2]: PAGE.FACE_SELECTION_2,
-  [PAGE.FACE_SELECTION_2]: PAGE.RESULTS
-}
+import QuitDialog from "../QuitDialog";
+import Instructions from "../Instructions";
+import { INSTRUCTIONS } from '../../constants/instructions'
+import { useNavigationContext } from "@/app/NavigationProvider";
+import { Button } from "@mui/material";
 
 export default function LoggedInRoutes() {
   const { user } = useAuth()
 
-  const getCurrentPage = () => {
-    if (!user?.surveyPreTrial) {
-      return PAGE.PRE_TRIAL
-    }
-    if (!user.trial1) {
-      return PAGE.SLIDESHOW_1
-    }
-    if (!user.trial2) {
-      return PAGE.SLIDESHOW_2
-    }
-    if (!user.surveyPostTrial) {
-      return PAGE.POST_TRIAL
-    }
-    return PAGE.RESULTS
-  }
-
-  const [page, setPage] = useState(getCurrentPage())
-  // const [page, setPage] = useState(1)
+  const { stepIndex, proceed, showQuitDialog, toggleQuitDialog } = useNavigationContext()
 
   const [responses, setResponses] = useState({
-      surveyPreTrial: [],
-      trial1: [],
-      trial2: [],
-      surveyPostTrial: []
+      surveyPreTrial: null,
+      trial1: null,
+      trial2: null,
+      surveyPostTrial: null
   })
 
-  const goToNextPage = () => {
-    const nextPage = NEXT_PAGE[page]
-
-    if (nextPage) {
-        setPage(nextPage)
-    }
-  }
+  useEffect(() => {
+    setResponses({
+      surveyPreTrial: user?.surveyPreTrial,
+      surveyPostTrial: user?.surveyPostTrial,
+      trial1: user?.trial1,
+      trial2: user?.trial2
+    })
+  }, [user])
 
   const setPreTrialResponses = async (values: any) => {
     try {
+      console.log('USER: ', user)
       const res = await fetch(`http://localhost:3000/api/users/${user?._id}/survey-responses`, {
         method: 'PUT', 
         headers: {
@@ -78,8 +49,7 @@ export default function LoggedInRoutes() {
           ...responses,
           surveyPreTrial: data
         })
-        
-        goToNextPage()
+        proceed()
       }
     } catch (err) {
       console.log(err)
@@ -102,6 +72,7 @@ export default function LoggedInRoutes() {
           ...responses,
           trial1: data
         })
+        proceed()
       }
     } catch (err) {
       console.log(err)
@@ -146,42 +117,58 @@ export default function LoggedInRoutes() {
           ...responses,
           surveyPostTrial: data
         })
-        
-        goToNextPage()
       }
     } catch (err) {
       console.log(err)
     }
   }
 
+  const quitStudy = async () => {
+    // TO DO: API call to set user.quit to true
+    toggleQuitDialog(false)
+  }
+
+  if (!user) {
+    return null
+  }
+
+  const STEPS = [
+    <Instructions text={INSTRUCTIONS.START} />,
+    <Survey setSurveyResponses={setPreTrialResponses} isPreTrial />,
+    <Instructions text={INSTRUCTIONS.T1_SLIDESHOW_1} />,
+    <Instructions text={INSTRUCTIONS.T1_SLIDESHOW_2} />,
+    <Slideshow hasContext={false} />,
+    <Instructions text={INSTRUCTIONS.T1_SLIDESHOW_3} />,
+    <Instructions text={INSTRUCTIONS.T1_MATCHING_1} />,
+    <FaceSelection hasContext={false} setTrialResponses={setTrial1Responses} />,
+    <Instructions text={INSTRUCTIONS.T1_MATCHING_2} />,
+    <Instructions text={INSTRUCTIONS.T2_1} />,
+    <Instructions text={INSTRUCTIONS.T2_2} />,
+    <Slideshow hasContext={true} />,
+    <FaceSelection hasContext={true} setTrialResponses={setTrial2Responses} />,
+    <Instructions text={INSTRUCTIONS.T2_3} />,
+    <Results showNextButton={!responses.surveyPostTrial} />,
+    <Instructions text={INSTRUCTIONS.POSTTRIAL_SURVEY} />,
+    <Survey setSurveyResponses={setPostTrialResponses} isPreTrial={false} />,
+    <Instructions text={INSTRUCTIONS.END} hideButtons />
+  ]
+
   return (
     <main style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: 36}}>
       <h1>Face Recognition Study</h1>
-      <Button onClick={goToNextPage}>Skip</Button>
-
-      {page === PAGE.PRE_TRIAL && (
-        <PreTrialSurvey setPreTrialResponses={setPreTrialResponses} />
+      {/* {user.role === 'admin' && stepIndex < STEPS.length - 1 && (
+        <Button onClick={proceed}>Skip</Button>
+      )} */}
+      {stepIndex < STEPS.length - 1 && (
+        <>
+          <Button onClick={proceed}>Skip</Button>
+          <div><strong>STEP INDEX: {stepIndex}</strong></div>
+        </>
       )}
 
-      {page === PAGE.SLIDESHOW_1 && (
-        <Slideshow hasContext={false} goToNextPage={goToNextPage} />
-      )}
+      {user.quit ? <Instructions text={INSTRUCTIONS.QUIT} hideButtons /> : STEPS[stepIndex]}
 
-      {page === PAGE.FACE_SELECTION_1 && (
-        <FaceSelection hasContext={false} goToNextPage={goToNextPage} setTrialResponses={setTrial1Responses} />
-      )}
-
-      {page === PAGE.SLIDESHOW_2 && (
-        <Slideshow hasContext={true} goToNextPage={goToNextPage} />
-      )}
-
-      {page === PAGE.FACE_SELECTION_2 && (
-        <FaceSelection hasContext={true} goToNextPage={goToNextPage} setTrialResponses={setTrial2Responses} />
-      )}
-
-      {page === PAGE.RESULTS && (
-        <Results trial1Responses={responses.trial1} trial2Responses={responses.trial2} />
-      )}
+      <QuitDialog isOpen={showQuitDialog} confirm={quitStudy} />
     </main>
   );
 }

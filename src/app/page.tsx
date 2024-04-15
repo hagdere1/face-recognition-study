@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import { useAuth } from "./AuthProvider";
 import { useRouter } from "next/navigation";
 import LoggedInRoutes from "./components/LoggedInRoutes";
+import NavigationProvider from "./NavigationProvider";
 
 export function AuthManager({ children }: { children: ReactNode | ReactNode[] }) {
   const { status } = useAuth();
@@ -24,7 +25,9 @@ export function AuthManager({ children }: { children: ReactNode | ReactNode[] })
 export default function App () {
   return (
     <AuthManager>
-      <LoggedInRoutes />
+      <NavigationProvider>
+        <LoggedInRoutes />
+      </NavigationProvider>
     </AuthManager>
   )
 }

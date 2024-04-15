@@ -4,6 +4,7 @@ import { images_t1 } from '../../../utils'
 import { images_t2 } from '../../../utils'
 import Button from '@mui/material/Button';
 import { useStopwatch } from 'react-use-precision-timer';
+import { useNavigationContext } from "@/app/NavigationProvider";
 
 type Response = {
   isCorrect: boolean,
@@ -33,11 +34,12 @@ type PhotoGridImageType = {
 
 type FaceSelectionProps = {
   hasContext: boolean,
-  goToNextPage: () => void,
   setTrialResponses: (values: any) => void
 }
 
-export default function FaceSelection({ hasContext, goToNextPage, setTrialResponses }: FaceSelectionProps) {
+export default function FaceSelection({ hasContext, setTrialResponses }: FaceSelectionProps) {
+  const { proceed } = useNavigationContext()
+
   const [data, setData] = useState<Persona[]>([])
 
   const [responses, setResponses] = useState<Response[]>([])
@@ -46,7 +48,6 @@ export default function FaceSelection({ hasContext, goToNextPage, setTrialRespon
 
   const [nameIndex, setNameIndex] = useState(-1)
   const [isStarted, setIsStarted] = useState(false)
-  const [isFinished, setIsFinished] = useState(false)
 
   const [isLoadingImageGrid, setIsLoadingImageGrid] = useState(true);
   const [loadedImages, setLoadedImages] = useState<PhotoGridImageType[]>([]);
@@ -62,6 +63,15 @@ export default function FaceSelection({ hasContext, goToNextPage, setTrialRespon
   }
 
   const gridWidth = 500
+
+  useEffect(() => {
+    console.log('DATA: ', data)
+    if (data.length && !isStarted) {
+console.log("START")
+      setIsStarted(true)
+      goToNextPerson()
+    }
+  }, [data.length])
 
   useEffect(() => {
      let loaded = 0;
@@ -110,11 +120,6 @@ export default function FaceSelection({ hasContext, goToNextPage, setTrialRespon
     }
   }, [responses.length])
 
-  const start = () => {
-    setIsStarted(true)
-    goToNextPerson()
-  }
-
   const skip = () => {
     setSelectedImage("unsure")
     setResponses([
@@ -136,8 +141,6 @@ export default function FaceSelection({ hasContext, goToNextPage, setTrialRespon
     const persona = data[nameIndex]
     const selectedPersona = data.find(persona => persona.image === imageName) as Persona
 
-    console.log('setResponses')
-
     setResponses([
       ...responses, 
       {
@@ -157,77 +160,55 @@ export default function FaceSelection({ hasContext, goToNextPage, setTrialRespon
   const goToNextPerson = () => {
     setSelectedImage("")
 
+    console.log('GO TO NEXT PERSON')
+
     if (nameIndex + 1 < data.length) {
-        setNameIndex(currentValue => currentValue + 1)
-        setLoadedImages(shuffleImages(loadedImages))
-        stopwatch.start()
+      setNameIndex(currentValue => currentValue + 1)
+      setLoadedImages(shuffleImages(loadedImages))
+      stopwatch.start()
     } else {
-        setIsFinished(true)
-        // setTrialResponses(responses)
+      proceed()
     }
   }
 
-  if (!data.length || isLoadingImageGrid) {
-    return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 36 }}>Loading...</div>
+  if (!data.length || nameIndex < 0 || isLoadingImageGrid) {
+    // return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 36 }}>Loading...</div>
+    return null
   }
-
-  if (isFinished) {
-    return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: 36 }}>
-      <div>
-        {hasContext 
-          ? "You have completed both trials. Click continue to view your results."
-          : "Click the continue button to proceed to the next trial."
-        }
-      </div>
-      <Button variant="contained" onClick={goToNextPage} style={{ marginTop: 24 }}>Continue</Button>
-    </div>
-  )}
 
   const examplePersona = data[nameIndex]
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 36, maxWidth: 700 }}>
-      {!isStarted && (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <div>
-            You will now be presented with a randomized grid of faces. Click on the face that corresponds with the given name. 
-          </div>
-          <Button variant="contained" onClick={start} style={{ marginTop: 24 }}>Start</Button>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '36px 0', maxWidth: 700 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{ marginBottom: 24 }}>Select <strong>{examplePersona.name}</strong>'s face</div>
+
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, height: gridWidth + 4, width: gridWidth }}>
+            {loadedImages.map((image, index) => (
+                <img
+                    onClick={() => {
+                      if (selectedImage) {
+                        return
+                      }
+                      selectImage(image.src)
+                    }}
+                    key={image.src}
+                    src={image.src}
+                    alt="face"
+                    style={{ 
+                      cursor: selectedImage ? 'auto' : 'pointer', 
+                      height: 'calc(33% - 2px)', 
+                      width: 'calc(33% - 2px)', 
+                      border: selectedImage === image.src ? "5px solid blue" : "none" 
+                    }}
+                />
+            ))}
         </div>
-      )}
 
-      {isStarted && (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <div style={{ marginBottom: 24 }}>Select <strong>{examplePersona.name}</strong>'s face</div>
-
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, height: gridWidth + 4, width: gridWidth }}>
-              {loadedImages.map((image, index) => (
-                  <img
-                      onClick={() => {
-                        if (selectedImage) {
-                          return
-                        }
-                        selectImage(image.src)
-                      }}
-                      key={image.src}
-                      src={image.src}
-                      alt="face"
-                      style={{ 
-                        cursor: selectedImage ? 'auto' : 'pointer', 
-                        height: 'calc(33% - 2px)', 
-                        width: 'calc(33% - 2px)', 
-                        border: selectedImage === image.src ? "5px solid blue" : "none" 
-                      }}
-                  />
-              ))}
-          </div>
-
-          <div style={{ marginTop: 24, width: gridWidth }}>
-              <Button disabled={!!selectedImage} fullWidth variant="contained" onClick={skip}>I'm not sure</Button>
-          </div>
+        <div style={{ marginTop: 24, width: gridWidth }}>
+            <Button disabled={!!selectedImage} fullWidth variant="contained" onClick={skip}>I'm not sure</Button>
         </div>
-      )}
+      </div>
     </div>
   );
 }
