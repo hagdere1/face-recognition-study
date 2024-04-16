@@ -48,6 +48,12 @@ const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 
   const sendAuthEmail = async (email: string) => {
       try {
+          const res = await fetch(`http://localhost:3000/api/auth/whitelist?email=${email}`)
+
+          if (!res.ok) {
+            throw new Error('User not found')
+          }
+
           await sendSignInLinkToEmail(auth, email, {
               url: 'http://localhost:3000/signin-confirm',
               handleCodeInApp: true

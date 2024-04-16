@@ -7,6 +7,7 @@ import { useAuth } from "../AuthProvider"
 import { GROUP, ROLE } from "../constants/roles"
 import { NUM_RESPONSES } from "../constants/responses"
 import Cookies from 'js-cookie'
+import UsersTable from "../components/UsersTable"
 
 type Member = {
     email: string,
@@ -125,9 +126,9 @@ export default function AdminView() {
 
             <div style={{ display: 'flex' }}>
                 <div style={{ marginRight: 24 }}>
-                    <div style={{ marginBottom: 4 }}>Accuracy:</div>
-                    <div style={{ marginBottom: 4 }}>Total Time:</div>
-                    <div style={{ marginBottom: 4 }}>Avg. Time:</div>
+                    <div style={{ marginBottom: 4, color: '#666' }}>Accuracy:</div>
+                    <div style={{ marginBottom: 4, color: '#666' }}>Total Time:</div>
+                    <div style={{ marginBottom: 4, color: '#666' }}>Avg. Time:</div>
                 </div>
                 <div>
                     <div style={{ marginBottom: 4 }}>{Math.round(accuracy * 100)}%</div>
@@ -137,17 +138,7 @@ export default function AdminView() {
             </div>
         </div>
     )
-
-    const admins = members.filter(member => member.role === ROLE.ADMIN)
-    const users = members.filter(member => member.role === ROLE.USER)
-
-    const testers = members.filter(member => member.role === ROLE.TESTER)
-    const testersOrphan = testers.filter(member => member.group === GROUP.ORPHAN)
-    const testersControl = testers.filter(member => member.group === GROUP.CONTROL)
-
-    const orphans = users.filter(member => member.group === GROUP.ORPHAN)
-    const control = users.filter(member => member.group === GROUP.CONTROL)
-
+    
     return (
         <AuthManager>
             <div style={{ padding: 36, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -206,40 +197,7 @@ export default function AdminView() {
                     </div>
 
                     <div style={{ display: 'flex', flex: 1 }}>
-                        <div style={{ marginRight: 36, width: '33.3%' }}>
-                            <div style={{ marginBottom: 36 }}>
-                                <div style={{ marginBottom: 16 }}><strong>Admins</strong> ({admins.length})</div>
-                                <ul style={{ padding: 24, borderRadius: 6, backgroundColor: '#fff' }}>
-                                    {admins.map(member => <li key={member.email} style={{ wordBreak: 'break-word', marginBottom: 6 }}>{member.email}</li>)}
-                                </ul>
-                            </div>
-                            <div style={{ marginBottom: 36 }}>
-                                <div style={{ marginBottom: 16 }}><strong>Testers: Orphan</strong> ({testersOrphan.length})</div>
-                                <ul style={{ padding: 24, borderRadius: 6, backgroundColor: '#fff' }}>
-                                    {testersOrphan.map(member => <li key={member.email} style={{ wordBreak: 'break-word', marginBottom: 6 }}>{member.email}</li>)}
-                                </ul>
-                            </div>
-                            <div>
-                                <div style={{ marginBottom: 16 }}><strong>Testers: Control</strong> ({testersControl.length})</div>
-                                <ul style={{ padding: 24, borderRadius: 6, backgroundColor: '#fff' }}>
-                                    {testersControl.map(member => <li key={member.email} style={{ wordBreak: 'break-word', marginBottom: 6 }}>{member.email}</li>)}
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div style={{ marginRight: 36, width: '33.3%' }}>
-                            <div style={{ marginBottom: 16 }}><strong>Participants: Orphan</strong> ({orphans.length})</div>
-                            <ul style={{ padding: 24, borderRadius: 6, backgroundColor: '#fff' }}>
-                                {orphans.map(member => <li key={member.email} style={{ wordBreak: 'break-word', marginBottom: 6 }}>{member.email}</li>)}
-                            </ul>
-                        </div>
-
-                        <div style={{ width: '33.3%' }}>
-                            <div style={{ marginBottom: 16 }}><strong>Participants: Control</strong> ({control.length})</div>
-                            <ul style={{ padding: 24, borderRadius: 6, backgroundColor: '#fff' }}>
-                                {control.map(member => <li key={member.email} style={{ wordBreak: 'break-word', marginBottom: 6 }}>{member.email}</li>)}
-                            </ul>
-                        </div>
+                        <UsersTable users={members} />
                     </div>
                 </div>
 
