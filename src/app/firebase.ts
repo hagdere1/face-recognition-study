@@ -22,7 +22,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 let analytics;
-if (window !== undefined) {
+if (typeof window !== 'undefined') {
    analytics = getAnalytics(app);
 }
 const db = getFirestore();
