@@ -6,7 +6,7 @@ import { headers } from "next/headers"
 
 connectDB()
 
-export async function GET(req: Request) {
+export async function DELETE(req: Request, { params }: any) {
     const referer = headers().get("authorization");
   
     if (!referer) {
@@ -20,14 +20,16 @@ export async function GET(req: Request) {
             throw Error('Unauthenticated')
         }
 
-        const queryString = req.url.split('?')[1]
-        const params = queryString.split('&')
-        const email = params[0].split('=')[1]
-        const firebaseUid = params[1].split('=')[1]
+        const { id } = params
 
-        const currentUser = await UserDetail.findOneAndUpdate({ email }, { firebaseUid }, { new: true }).exec()
+        const user = await UserDetail.findById(id)
 
-        return NextResponse.json(currentUser, { status: 200 })
+        if (user.firebaseUid) {
+            await auth.deleteUser(user.firebaseUid)
+        }
+        await UserDetail.deleteOne({ _id: id })
+
+        return NextResponse.json(true, { status: 200 })
     } catch (error) {
         console.log(error)
     }

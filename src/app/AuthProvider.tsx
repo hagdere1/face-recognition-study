@@ -100,9 +100,9 @@ const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
     router.replace('/signin')
   }
 
-  const fetchUser = async (email: string) => {
+  const fetchUser = async (email: string, firebaseUid: string) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/users/current?email=${email}`, {
+      const res = await fetch(`http://localhost:3000/api/users/current?email=${email}&firebaseUid=${firebaseUid}`, {
         headers: {
           Authorization: `Bearer ${Cookies.get(process.env.NEXT_PUBLIC_AUTH_TOKEN_COOKIE_NAME || "")}`
         }
@@ -124,7 +124,7 @@ const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
       if (user) {
         const idToken = await user.getIdToken()
         Cookies.set(process.env.NEXT_PUBLIC_AUTH_TOKEN_COOKIE_NAME || "", idToken, { sameSite: "strict" });
-        fetchUser(user.email || "")
+        fetchUser(user.email as string, auth.currentUser?.uid as string)
       } else { 
         setStatus("unauthenticated"); 
       }
@@ -140,7 +140,7 @@ const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
         firebaseUser: auth.currentUser,
         user: user ? user as User : null,
         signOut,
-        refetchUser: async () => fetchUser(user?.email as string)
+        refetchUser: async () => fetchUser(user?.email as string, auth.currentUser?.uid as string)
       }}
     >
       {children}

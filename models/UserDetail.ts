@@ -27,6 +27,7 @@ const TrialSchema = new mongoose.Schema({
 })
 
 const UserDetailSchema = new mongoose.Schema({
+    firebaseUid: { type: String, unique: true, default: null },
     email: { type: String, required: true, unique: true, index: true, sparse: true },
     role: { type: String, required: true },
     group: { type: String },

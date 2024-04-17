@@ -138,7 +138,7 @@ export default function AdminView() {
             </div>
         </div>
     )
-    
+
     return (
         <AuthManager>
             <div style={{ padding: 36, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -197,7 +197,10 @@ export default function AdminView() {
                     </div>
 
                     <div style={{ display: 'flex', flex: 1 }}>
-                        <UsersTable users={members} />
+                        <UsersTable users={members} refetch={() => {
+                            fetchUsers()
+                            fetchResults()
+                        }} />
                     </div>
                 </div>
 
@@ -205,7 +208,7 @@ export default function AdminView() {
                     <div style={{ marginBottom: 36, width: '100%' }}>
                         <h3>Results</h3>
                         <div style={{ display: 'flex', marginTop: 24 }}>
-                            <div style={{ padding: 24, borderRadius: 6, width: '50%', backgroundColor: '#fff', marginRight: 36 }}>
+                            <div style={{ padding: 24, borderRadius: 6, width: '25%', backgroundColor: '#fff', marginRight: 36 }}>
                                 {/* @ts-ignore */}
                                 <div style={{ marginBottom: 24 }}><strong>Orphans</strong> ({results?.orphan.count})</div>
 
@@ -215,7 +218,7 @@ export default function AdminView() {
                                 {/* @ts-ignore */}
                                 {resultCard('Trial 2', results?.orphan.trial2.time, results?.orphan.trial2.accuracy)}
                             </div>
-                            <div style={{ padding: 24, borderRadius: 6, width: '50%', backgroundColor: '#fff' }}>
+                            <div style={{ padding: 24, borderRadius: 6, width: '25%', backgroundColor: '#fff' }}>
                                 {/* @ts-ignore */}
                                 <div style={{ marginBottom: 24 }}><strong>Control</strong> ({results?.control.count})</div>
                                 
