@@ -13,7 +13,7 @@ type DeleteModalProps = {
 function DeleteModal({ close, userId, refetch }: DeleteModalProps) {
     const confirm = async () => {
         try {
-            const res = await fetch(`http://localhost:3000/api/users/${userId}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/users/${userId}`, {
                 method: 'DELETE',
                 headers: {
                     Authorization: `Bearer ${Cookies.get(process.env.NEXT_PUBLIC_AUTH_TOKEN_COOKIE_NAME || "")}`,

@@ -35,7 +35,7 @@ export default function LoggedInRoutes() {
 
   const setPreTrialResponses = async (values: any) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/users/${user?._id}/survey-responses`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/users/${user?._id}/survey-responses`, {
         method: 'PUT', 
         headers: {
             Authorization: `Bearer ${Cookies.get(process.env.NEXT_PUBLIC_AUTH_TOKEN_COOKIE_NAME || "")}`,
@@ -59,7 +59,7 @@ export default function LoggedInRoutes() {
 
   const setTrial1Responses = async (values: any) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/users/${user?._id}/trial-responses`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/users/${user?._id}/trial-responses`, {
         method: 'PUT', 
         headers: {
             Authorization: `Bearer ${Cookies.get(process.env.NEXT_PUBLIC_AUTH_TOKEN_COOKIE_NAME || "")}`,
@@ -82,7 +82,7 @@ export default function LoggedInRoutes() {
 
   const setTrial2Responses = async (values: any) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/users/${user?._id}/trial-responses`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/users/${user?._id}/trial-responses`, {
         method: 'PUT', 
         headers: {
             Authorization: `Bearer ${Cookies.get(process.env.NEXT_PUBLIC_AUTH_TOKEN_COOKIE_NAME || "")}`,
@@ -105,7 +105,7 @@ export default function LoggedInRoutes() {
 
   const setPostTrialResponses = async (values: any) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/users/${user?._id}/survey-responses`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/users/${user?._id}/survey-responses`, {
         method: 'PUT', 
         headers: {
             Authorization: `Bearer ${Cookies.get(process.env.NEXT_PUBLIC_AUTH_TOKEN_COOKIE_NAME || "")}`,

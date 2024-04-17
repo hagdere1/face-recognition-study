@@ -30,7 +30,7 @@ const NavigationProvider = ({ children }: PropsWithChildren<{}>) => {
     
     const quit = async () => {
         try {
-            await fetch(`http://localhost:3000/api/users/${user?._id}/quit`, {
+            await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/users/${user?._id}/quit`, {
                 method: 'PUT',
                 headers: {
                     Authorization: `Bearer ${Cookies.get(process.env.NEXT_PUBLIC_AUTH_TOKEN_COOKIE_NAME || "")}`

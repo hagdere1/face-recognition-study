@@ -48,14 +48,14 @@ const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 
   const sendAuthEmail = async (email: string) => {
       try {
-          const res = await fetch(`http://localhost:3000/api/auth/whitelist?email=${email}`)
+          const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/auth/whitelist?email=${email}`)
 
           if (!res.ok) {
             throw new Error('User not found')
           }
 
           await sendSignInLinkToEmail(auth, email, {
-              url: 'http://localhost:3000/signin-confirm',
+              url: `${process.env.NEXT_PUBLIC_BASE_URL}signin-confirm`,
               handleCodeInApp: true
           })
           window.localStorage.setItem('orphanFaceRecognitionStudyEmail', email);
@@ -102,7 +102,7 @@ const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 
   const fetchUser = async (email: string, firebaseUid: string) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/users/current?email=${email}&firebaseUid=${firebaseUid}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/users/current?email=${email}&firebaseUid=${firebaseUid}`, {
         headers: {
           Authorization: `Bearer ${Cookies.get(process.env.NEXT_PUBLIC_AUTH_TOKEN_COOKIE_NAME || "")}`
         }
