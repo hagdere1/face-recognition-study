@@ -73,7 +73,7 @@ export default function DataTable({ users, refetch }: DataTableProps) {
                             },
                         }}
                         pageSizeOptions={[10, 20]}
-                        style={{ maxHeight: 500, minHeight: 440, width: '100%', backgroundColor: 'white' }}
+                        style={{ minHeight: 440, width: '100%', backgroundColor: 'white' }}
                     />
                 </div>
             </div>

@@ -1,7 +1,7 @@
 'use client'
 import { Button } from "@mui/material";
 import { useAuth } from "@/app/AuthProvider";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
 import { ROLE } from "@/app/constants/roles";
 import { useRouter } from "next/navigation";
 
@@ -13,8 +13,6 @@ export default function Layout({ children }: LayoutProps) {
     const { user, signOut } = useAuth()
 
     const router = useRouter()
-
-    const isAdminPage = window.location.href.includes('admin')
 
     return (
         <>
