@@ -5,7 +5,6 @@
         "image": "t1_male_white_1",
         "gender": "male",
         "race": "white",
-        "emotionalValency": "positive",
         "context": null
     },
     {
@@ -14,7 +13,6 @@
         "image": "t1_female_white_1",
         "gender": "female",
         "race": "white",
-        "emotionalValency": "positive",
         "context": null
     },
     {
@@ -23,10 +21,8 @@
         "image": "t1_female_asian_1",
         "gender": "female",
         "race": "asian",
-        "emotionalValency": "positive",
         "context": null
     },
-
 
     {
         "id": 3,
@@ -34,7 +30,6 @@
         "image": "t1_male_white_2",
         "gender": "male",
         "race": "white",
-        "emotionalValency": "positive",
         "context": null
     },
     {
@@ -43,7 +38,6 @@
         "image": "t1_female_white_2",
         "gender": "female",
         "race": "white",
-        "emotionalValency": "positive",
         "context": null
     },
     {
@@ -52,7 +46,6 @@
         "image": "t1_female_asian_2",
         "gender": "female",
         "race": "asian",
-        "emotionalValency": "positive",
         "context": null
     },
 
@@ -62,7 +55,6 @@
         "image": "t1_female_asian_3",
         "gender": "female",
         "race": "asian",
-        "emotionalValency": "positive",
         "context": null
     },
     {
@@ -71,7 +63,6 @@
         "image": "t1_female_white_3",
         "gender": "female",
         "race": "white",
-        "emotionalValency": "positive",
         "context": null
     },
     {
@@ -80,7 +71,6 @@
         "image": "t1_male_white_3",
         "gender": "male",
         "race": "white",
-        "emotionalValency": "positive",
         "context": null
     }
 ]

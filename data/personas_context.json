@@ -5,10 +5,10 @@
         "image": "t2_female_black_1",
         "gender": "female",
         "race": "black",
-        "emotionalValency": "positive",
         "context": {
             "sentence": "Tasha enjoys working with her uncles.",
-            "hasFamily": true
+            "hasFamily": true,
+            "emotionalValency": "positive"
         }
     },
     {
@@ -17,10 +17,10 @@
         "image": "t2_female_black_2",
         "gender": "female",
         "race": "black",
-        "emotionalValency": "positive",
         "context": {
             "sentence": "Michelle loves when her baby brother hugs her.",
-            "hasFamily": true
+            "hasFamily": true,
+            "emotionalValency": "positive"
         }
     },
     {
@@ -29,10 +29,10 @@
         "image": "t2_female_hispanic_1",
         "gender": "female",
         "race": "hispanic",
-        "emotionalValency": "positive",
         "context": {
             "sentence": "Maria makes sure her puppy is fed every night.",
-            "hasFamily": true
+            "hasFamily": true,
+            "emotionalValency": "positive"
         }
     },
 
@@ -42,10 +42,10 @@
         "image": "t2_female_hispanic_2",
         "gender": "female",
         "race": "hispanic",
-        "emotionalValency": "positive",
         "context": {
             "sentence": "Janet made a lot of friends in high school.",
-            "hasFamily": true
+            "hasFamily": true,
+            "emotionalValency": "positive"
         }
     },
     {
@@ -54,10 +54,10 @@
         "image": "t2_female_hispanic_3",
         "gender": "female",
         "race": "hispanic",
-        "emotionalValency": "positive",
         "context": {
             "sentence": "Rose enjoys working with her uncles",
-            "hasFamily": true
+            "hasFamily": true,
+            "emotionalValency": "positive"
         }
     },
     {
@@ -66,10 +66,10 @@
         "image": "t2_male_black_1",
         "gender": "male",
         "race": "black",
-        "emotionalValency": "positive",
         "context": {
             "sentence": "Cedric's aunts and uncles play board games with him.",
-            "hasFamily": true
+            "hasFamily": true,
+            "emotionalValency": "positive"
         }
     },
 
@@ -79,10 +79,10 @@
         "image": "t2_male_black_2",
         "gender": "male",
         "race": "black",
-        "emotionalValency": "positive",
         "context": {
             "sentence": "Garfield loves rocking his newborn baby to sleep.",
-            "hasFamily": true
+            "hasFamily": true,
+            "emotionalValency": "positive"
         }
     },
     {
@@ -91,10 +91,10 @@
         "image": "t2_male_hispanic_1",
         "gender": "male",
         "race": "hispanic",
-        "emotionalValency": "positive",
         "context": {
             "sentence": "Marcus works in the same field as his cousin.",
-            "hasFamily": true
+            "hasFamily": true,
+            "emotionalValency": "positive"
         }
     },
     {
@@ -103,10 +103,10 @@
         "image": "t2_male_hispanic_2",
         "gender": "male",
         "race": "hispanic",
-        "emotionalValency": "positive",
         "context": {
             "sentence": "Anthony has the same name as his cousin.",
-            "hasFamily": true
+            "hasFamily": true,
+            "emotionalValency": "positive"
         }
     }
 

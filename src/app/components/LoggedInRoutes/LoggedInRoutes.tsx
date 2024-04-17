@@ -137,8 +137,6 @@ export default function LoggedInRoutes() {
     return null
   }
 
-  console.log(responses)
-
   const STEPS = [
     <Instructions key={'step_0'} text={INSTRUCTIONS.START} />,
     <Survey key={'step_1'} setSurveyResponses={setPreTrialResponses} isPreTrial />,
