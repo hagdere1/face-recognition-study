@@ -56,6 +56,7 @@ export default function DataTable({ users, refetch }: DataTableProps) {
         { field: 'email', headerName: 'Email', width: 400 },
         { field: 'role', headerName: 'Role', width: 100 },
         { field: 'group', headerName: 'Group', width: 100 },
+        { field: 'surveyPostTrial', headerName: 'Finished', width: 100, renderCell: (params) => params.row.surveyPostTrial ? 'yes' : 'no' },
         { field: 'delete', sortable: false, filterable: false, headerName: '', renderCell: (params) => <Button variant='contained' color='error' onClick={() => setSelectedUser(params.id)}>Delete</Button> }
     ];
 

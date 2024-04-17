@@ -211,23 +211,44 @@ export default function AdminView() {
                         <div style={{ display: 'flex', marginTop: 24 }}>
                             <div style={{ padding: 24, borderRadius: 6, width: '25%', backgroundColor: '#fff', marginRight: 36 }}>
                                 {/* @ts-ignore */}
-                                <div style={{ marginBottom: 24 }}><strong>Orphans</strong> ({results?.orphan.count})</div>
+                                <div style={{ marginBottom: 24 }}><strong>Orphans</strong> ({results?.user.orphan.count})</div>
 
                                 {/* @ts-ignore */}
-                                {resultCard('Trial 1', results?.orphan.trial1.time, results?.orphan.trial1.accuracy)}
+                                {resultCard('Trial 1', results?.user.orphan.trial1.time, results?.user.orphan.trial1.accuracy)}
 
                                 {/* @ts-ignore */}
-                                {resultCard('Trial 2', results?.orphan.trial2.time, results?.orphan.trial2.accuracy)}
+                                {resultCard('Trial 2', results?.user.orphan.trial2.time, results?.user.orphan.trial2.accuracy)}
+                            </div>
+                            <div style={{ padding: 24, borderRadius: 6, width: '25%', backgroundColor: '#fff', marginRight: 36 }}>
+                                {/* @ts-ignore */}
+                                <div style={{ marginBottom: 24 }}><strong>Control</strong> ({results?.user.control.count})</div>
+                                
+                                {/* @ts-ignore */}
+                                {resultCard('Trial 1', results?.user.control.trial1.time, results?.user.control.trial1.accuracy)}
+
+                                {/* @ts-ignore */}
+                                {resultCard('Trial 2', results?.user.control.trial2.time, results?.user.control.trial2.accuracy)}
+                            </div>
+                            {/* TESTER RESULTS */}
+                            <div style={{ padding: 24, borderRadius: 6, width: '25%', backgroundColor: '#fff', marginRight: 36 }}>
+                                {/* @ts-ignore */}
+                                <div style={{ marginBottom: 24 }}><strong>Test: Orphans</strong> ({results?.tester.orphan.count})</div>
+
+                                {/* @ts-ignore */}
+                                {resultCard('Trial 1', results?.tester.orphan.trial1.time, results?.tester.orphan.trial1.accuracy)}
+
+                                {/* @ts-ignore */}
+                                {resultCard('Trial 2', results?.tester.orphan.trial2.time, results?.tester.orphan.trial2.accuracy)}
                             </div>
                             <div style={{ padding: 24, borderRadius: 6, width: '25%', backgroundColor: '#fff' }}>
                                 {/* @ts-ignore */}
-                                <div style={{ marginBottom: 24 }}><strong>Control</strong> ({results?.control.count})</div>
+                                <div style={{ marginBottom: 24 }}><strong>Test: Control</strong> ({results?.tester.control.count})</div>
                                 
                                 {/* @ts-ignore */}
-                                {resultCard('Trial 1', results?.control.trial1.time, results?.control.trial1.accuracy)}
+                                {resultCard('Trial 1', results?.tester.control.trial1.time, results?.tester.control.trial1.accuracy)}
 
                                 {/* @ts-ignore */}
-                                {resultCard('Trial 2', results?.control.trial2.time, results?.control.trial2.accuracy)}
+                                {resultCard('Trial 2', results?.tester.control.trial2.time, results?.tester.control.trial2.accuracy)}
                             </div>
                         </div>
                     </div>

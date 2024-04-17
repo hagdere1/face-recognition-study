@@ -3,12 +3,14 @@ import UserDetail from '../../../../models/UserDetail';
 import connectDB from '../../../../db';
 import { auth } from '../../firebase-admin';
 import { headers } from "next/headers"
+import { ROLE } from '@/app/constants/roles';
 
 connectDB()
 
-const getResults = (users: any[]) => {
-    const numOrphans = users.filter(user => user.group === 'orphan').length
-    const numControl = users.filter(user => user.group === 'control').length
+const getResults = (users: any[], role: string) => {
+    const group = users.filter(user => user.role === role)
+    const numOrphans = group.filter(user => user.group === 'orphan').length
+    const numControl = group.filter(user => user.group === 'control').length
 
     const runningTotals = {
         orphan: {
@@ -87,9 +89,13 @@ export async function GET(req: Request) {
             trial2: { $ne: null }
         }).exec()
 
-        const averages = getResults(users)
+        const averages = getResults(users, ROLE.USER)
+        const averagesTest = getResults(users, ROLE.TESTER)
 
-        return NextResponse.json(averages, { status: 200 })
+        return NextResponse.json({
+            user: averages,
+            tester: averagesTest
+        }, { status: 200 })
     } catch (error) {
         console.log(error)
     }
