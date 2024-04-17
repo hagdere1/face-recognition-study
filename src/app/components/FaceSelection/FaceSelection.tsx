@@ -177,7 +177,7 @@ export default function FaceSelection({ hasContext, setTrialResponses }: FaceSel
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '36px 0', maxWidth: 700 }}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{ marginBottom: 24 }}>Select <strong>{examplePersona.name}</strong>'s face</div>
+        <div style={{ marginBottom: 24 }}>Select <strong>{examplePersona.name}</strong>&rsquo;s face</div>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, height: gridWidth + 4, width: gridWidth }}>
             {loadedImages.map((image, index) => (
@@ -202,7 +202,7 @@ export default function FaceSelection({ hasContext, setTrialResponses }: FaceSel
         </div>
 
         <div style={{ marginTop: 24, width: gridWidth }}>
-            <Button disabled={!!selectedImage} fullWidth variant="contained" onClick={skip}>I'm not sure</Button>
+            <Button disabled={!!selectedImage} fullWidth variant="contained" onClick={skip}>I&rsquo;m not sure</Button>
         </div>
       </div>
     </div>

@@ -136,25 +136,25 @@ export default function LoggedInRoutes() {
   }
 
   const STEPS = [
-    <Instructions text={INSTRUCTIONS.START} />,
-    <Survey setSurveyResponses={setPreTrialResponses} isPreTrial />,
-    <Instructions text={INSTRUCTIONS.T1_SLIDESHOW_1} />,
-    <Instructions text={INSTRUCTIONS.T1_SLIDESHOW_2} />,
-    <Slideshow hasContext={false} />,
-    <Instructions text={INSTRUCTIONS.T1_SLIDESHOW_3} />,
-    <Instructions text={INSTRUCTIONS.T1_MATCHING_1} />,
-    <FaceSelection hasContext={false} setTrialResponses={setTrial1Responses} />,
-    <Instructions text={INSTRUCTIONS.T1_MATCHING_2} />,
-    <Instructions text={INSTRUCTIONS.T2_1} />,
-    <Instructions text={INSTRUCTIONS.T2_2} />,
-    <Slideshow hasContext={true} />,
-    <FaceSelection hasContext={true} setTrialResponses={setTrial2Responses} />,
-    <Instructions text={INSTRUCTIONS.T2_3} />,
+    <Instructions key={'step_0'} text={INSTRUCTIONS.START} />,
+    <Survey key={'step_1'} setSurveyResponses={setPreTrialResponses} isPreTrial />,
+    <Instructions key={'step_2'} text={INSTRUCTIONS.T1_SLIDESHOW_1} />,
+    <Instructions key={'step_3'} text={INSTRUCTIONS.T1_SLIDESHOW_2} />,
+    <Slideshow key={'step_4'} hasContext={false} />,
+    <Instructions key={'step_5'} text={INSTRUCTIONS.T1_SLIDESHOW_3} />,
+    <Instructions key={'step_6'} text={INSTRUCTIONS.T1_MATCHING_1} />,
+    <FaceSelection key={'step_7'} hasContext={false} setTrialResponses={setTrial1Responses} />,
+    <Instructions key={'step_8'} text={INSTRUCTIONS.T1_MATCHING_2} />,
+    <Instructions key={'step_9'} text={INSTRUCTIONS.T2_1} />,
+    <Instructions key={'step_10'} text={INSTRUCTIONS.T2_2} />,
+    <Slideshow key={'step_11'} hasContext={true} />,
+    <FaceSelection key={'step_12'} hasContext={true} setTrialResponses={setTrial2Responses} />,
+    <Instructions key={'step_13'} text={INSTRUCTIONS.T2_3} />,
     // @ts-ignore
-    <Results trial1Results={responses.trial1?.results} trial2Results={responses.trial2?.results} />,
-    <Instructions text={INSTRUCTIONS.POSTTRIAL_SURVEY} />,
-    <Survey setSurveyResponses={setPostTrialResponses} isPreTrial={false} />,
-    <Instructions text={INSTRUCTIONS.END} hideButtons />
+    <Results key={'step_14'} trial1Results={responses.trial1?.results} trial2Results={responses.trial2?.results} />,
+    <Instructions key={'step_15'} text={INSTRUCTIONS.POSTTRIAL_SURVEY} />,
+    <Survey key={'step_16'} setSurveyResponses={setPostTrialResponses} isPreTrial={false} />,
+    <Instructions key={'step_17'} text={INSTRUCTIONS.END} hideButtons />
   ]
 
   return (
