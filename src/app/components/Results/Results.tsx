@@ -15,7 +15,7 @@ export default function Results({ trial1Results, trial2Results }: ResultsProps) 
     }
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 36 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <h2 style={{ marginBottom: 24, color: 'grey' }}>Results</h2>
 
             <div style={{ display: 'flex' }}>

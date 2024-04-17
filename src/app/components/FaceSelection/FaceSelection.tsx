@@ -1,7 +1,6 @@
 'use client'
 import { useEffect, useState } from "react";
-import { images_t1 } from '../../../utils'
-import { images_t2 } from '../../../utils'
+import { getT1Images, getT2Images } from "@/utils/images";
 import Button from '@mui/material/Button';
 import { useStopwatch } from 'react-use-precision-timer';
 import { useNavigationContext } from "@/app/NavigationProvider";
@@ -62,7 +61,7 @@ export default function FaceSelection({ hasContext, setTrialResponses }: FaceSel
     return personas.sort(() => Math.random() - 0.5)
   }
 
-  const gridWidth = 500
+  const gridWidth = 600
 
   useEffect(() => {
     if (data.length && !isStarted) {
@@ -75,13 +74,15 @@ export default function FaceSelection({ hasContext, setTrialResponses }: FaceSel
      let loaded = 0;
      const images: PhotoGridImageType[] = []
 
+     const images_t1 = getT1Images()
+     const images_t2 = getT2Images()
      const trialImages = hasContext ? images_t2 : images_t1
 
-     trialImages.forEach(({ src }) => {
+     trialImages.forEach((image: any) => {
         var photo = new Image();
-        photo.src = src;
+        photo.src = image.default.src;
         photo.onload = () => {
-          images.push({ src, width: photo.naturalWidth, height: photo.naturalHeight });
+          images.push({ src: image.default.src, width: photo.naturalWidth, height: photo.naturalHeight });
 
           if (++loaded === trialImages.length) {
             const shuffledImages = shuffleImages(images)
@@ -168,16 +169,15 @@ export default function FaceSelection({ hasContext, setTrialResponses }: FaceSel
   }
 
   if (!data.length || nameIndex < 0 || isLoadingImageGrid) {
-    // return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 36 }}>Loading...</div>
     return null
   }
 
   const examplePersona = data[nameIndex]
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '36px 0', maxWidth: 700 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: 700, marginTop: -16 }}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{ marginBottom: 24 }}>Select <strong>{examplePersona.name}</strong>&rsquo;s face</div>
+        <div style={{ marginBottom: 24, fontSize: 18 }}>Select <strong>{examplePersona.name}</strong>&rsquo;s face</div>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, height: gridWidth + 4, width: gridWidth }}>
             {loadedImages.map((image, index) => (
@@ -193,15 +193,15 @@ export default function FaceSelection({ hasContext, setTrialResponses }: FaceSel
                     alt="face"
                     style={{ 
                       cursor: selectedImage ? 'auto' : 'pointer', 
-                      height: 'calc(33% - 2px)', 
-                      width: 'calc(33% - 2px)', 
+                      height: 'calc(16% - 2px)', 
+                      width: 'calc(16% - 2px)', 
                       border: selectedImage === image.src ? "5px solid blue" : "none" 
                     }}
                 />
             ))}
         </div>
 
-        <div style={{ marginTop: 24, width: gridWidth }}>
+        <div style={{ marginTop: 16, width: gridWidth }}>
             <Button disabled={!!selectedImage} fullWidth variant="contained" onClick={skip}>I&rsquo;m not sure</Button>
         </div>
       </div>

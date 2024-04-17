@@ -161,7 +161,7 @@ export default function LoggedInRoutes() {
 
   return (
     <main style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: 36, paddingTop: 0 }}>
-      <h1 style={{ marginBottom: 36 }}>Face Recognition Study</h1>
+      {/* <h2 style={{ marginBottom: 36 }}>Face Recognition Study</h2> */}
       {/* {user.role === 'admin' && stepIndex < STEPS.length - 1 && (
         <>
           <Button onClick={proceed}>Skip</Button>

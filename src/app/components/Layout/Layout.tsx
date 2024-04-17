@@ -17,14 +17,18 @@ export default function Layout({ children }: LayoutProps) {
     return (
         <>
             {user && (
-                <div style={{ display: 'flex', justifyContent: user.role === ROLE.ADMIN ? 'space-between' : 'flex-end', padding: '12px 24px 0 24px' }}>
-                    {user.role === ROLE.ADMIN && (
-                        <div>
-                            <Button onClick={() => router.push('/admin')} style={{ marginRight: 8 }}>ADMIN DASHBOARD</Button>
-                            <Button onClick={() => router.push('/')}>TRIAL</Button>
-                        </div>
-                    )}
-                    <Button onClick={signOut}>Sign out</Button>
+                <div style={{ display: 'flex', justifyContent: user.role === ROLE.ADMIN ? 'space-between' : 'flex-end', padding: '12px 24px 36px 24px', }}>
+                    <div style={{ fontSize: 18 }}><strong>Face Recognition Study</strong></div>
+
+                    <div>
+                        {user.role === ROLE.ADMIN && (
+                            <>
+                                <Button onClick={() => router.push('/admin')} style={{ marginRight: 8 }}>ADMIN DASHBOARD</Button>
+                                <Button onClick={() => router.push('/')} style={{ marginRight: 8 }}>TRIAL</Button>
+                            </>
+                        )}
+                        <Button onClick={signOut}>Sign out</Button>
+                    </div>
                 </div>
             )}
             {children}

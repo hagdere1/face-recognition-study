@@ -1,1 +1,1 @@
-export const NUM_RESPONSES = 9
+export const NUM_RESPONSES = 36

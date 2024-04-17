@@ -1,76 +1,38 @@
 [
-    {
-        "id": 0,
-        "name": "Malik",
-        "image": "t1_male_white_1",
-        "gender": "male",
-        "race": "white",
-        "context": null
-    },
-    {
-        "id": 1,
-        "name": "Shoshana",
-        "image": "t1_female_white_1",
-        "gender": "female",
-        "race": "white",
-        "context": null
-    },
-    {
-        "id": 2,
-        "name": "Stephania",
-        "image": "t1_female_asian_1",
-        "gender": "female",
-        "race": "asian",
-        "context": null
-    },
-
-    {
-        "id": 3,
-        "name": "Joey",
-        "image": "t1_male_white_2",
-        "gender": "male",
-        "race": "white",
-        "context": null
-    },
-    {
-        "id": 4,
-        "name": "Clara",
-        "image": "t1_female_white_2",
-        "gender": "female",
-        "race": "white",
-        "context": null
-    },
-    {
-        "id": 5,
-        "name": "Grace",
-        "image": "t1_female_asian_2",
-        "gender": "female",
-        "race": "asian",
-        "context": null
-    },
-
-    {
-        "id": 6,
-        "name": "Fannie",
-        "image": "t1_female_asian_3",
-        "gender": "female",
-        "race": "asian",
-        "context": null
-    },
-    {
-        "id": 7,
-        "name": "Henrietta",
-        "image": "t1_female_white_3",
-        "gender": "female",
-        "race": "white",
-        "context": null
-    },
-    {
-        "id": 8,
-        "name": "George",
-        "image": "t1_male_white_3",
-        "gender": "male",
-        "race": "white",
-        "context": null
-    }
+    {"id": 0, "name": "Anastasia", "image": "t1_anastasia_f_w", "gender": "female", "race": "white", "context": null},
+    {"id": 1, "name": "Barry", "image": "t1_barry_m_w", "gender": "male", "race": "white", "context": null},
+    {"id": 2, "name": "Benjamin", "image": "t1_benjamin_m_w", "gender": "male", "race": "white", "context": null},
+    {"id": 3, "name": "Brooke", "image": "t1_brooke_f_w", "gender": "female", "race": "white", "context": null},
+    {"id": 4, "name": "Cassandra", "image": "t1_cassandra_f_n", "gender": "female", "race": "non-white", "context": null},
+    {"id": 5, "name": "Desmond", "image": "t1_desmond_m_w", "gender": "male", "race": "white", "context": null},
+    {"id": 6, "name": "Dominic", "image": "t1_dominic_m_w", "gender": "male", "race": "white", "context": null},
+    {"id": 7, "name": "Donovan", "image": "t1_donovan_m_w", "gender": "male", "race": "white", "context": null},
+    {"id": 8, "name": "Ellie", "image": "t1_ellie_f_w", "gender": "female", "race": "white", "context": null},
+    {"id": 9, "name": "Fiona", "image": "t1_fiona_f_n", "gender": "female", "race": "non-white", "context": null},
+    {"id": 10, "name": "Franklin", "image": "t1_franklin_m_n", "gender": "male", "race": "non-white", "context": null},
+    {"id": 11, "name": "Gabrielle", "image": "t1_gabrielle_f_n", "gender": "female", "race": "non-white", "context": null},
+    {"id": 12, "name": "Garrett", "image": "t1_garrett_m_n", "gender": "male", "race": "non-white", "context": null},
+    {"id": 13, "name": "Greg", "image": "t1_greg_m_w", "gender": "male", "race": "white", "context": null},
+    {"id": 14, "name": "Isaac", "image": "t1_isaac_m_w", "gender": "male", "race": "white", "context": null},
+    {"id": 15, "name": "Jack", "image": "t1_jack_m_w", "gender": "male", "race": "white", "context": null},
+    {"id": 16, "name": "Jasmine", "image": "t1_jasmine_f_w", "gender": "female", "race": "white", "context": null},
+    {"id": 17, "name": "Layla", "image": "t1_layla_f_n", "gender": "female", "race": "non-white", "context": null},
+    {"id": 18, "name": "Leonora", "image": "t1_leonora_f_w", "gender": "female", "race": "white", "context": null},
+    {"id": 19, "name": "Meredith", "image": "t1_meredith_f_n", "gender": "female", "race": "non-white", "context": null},
+    {"id": 20, "name": "Miranda", "image": "t1_miranda_f_w", "gender": "female", "race": "white", "context": null},
+    {"id": 21, "name": "Natalie", "image": "t1_natalie_f_n", "gender": "female", "race": "non-white", "context": null},
+    {"id": 22, "name": "Paige", "image": "t1_paige_f_w", "gender": "female", "race": "white", "context": null},
+    {"id": 23, "name": "Penelope", "image": "t1_penelope_f_n", "gender": "female", "race": "non-white", "context": null},
+    {"id": 24, "name": "Ryan", "image": "t1_ryan_m_n", "gender": "male", "race": "non-white", "context": null},
+    {"id": 25, "name": "Simone", "image": "t1_simone_f_n", "gender": "female", "race": "non-white", "context": null},
+    {"id": 26, "name": "Spencer", "image": "t1_spencer_m_n", "gender": "male", "race": "non-white", "context": null},
+    {"id": 27, "name": "Spiro", "image": "t1_spiro_m_w", "gender": "male", "race": "white", "context": null},
+    {"id": 28, "name": "Theo", "image": "t1_theo_m_n", "gender": "male", "race": "non-white", "context": null},
+    {"id": 29, "name": "Tristan", "image": "t1_tristan_m_w", "gender": "male", "race": "white", "context": null},
+    {"id": 30, "name": "Tyler", "image": "t1_tyler_m_n", "gender": "male", "race": "non-white", "context": null},
+    {"id": 31, "name": "Vanessa", "image": "t1_vanessa_f_n", "gender": "female", "race": "non-white", "context": null},
+    {"id": 32, "name": "Veronica", "image": "t1_veronica_f_w", "gender": "female", "race": "white", "context": null},
+    {"id": 33, "name": "Victoria", "image": "t1_victoria_f_n", "gender": "female", "race": "non-white", "context": null},
+    {"id": 34, "name": "Vincent", "image": "t1_vincent_m_n", "gender": "male", "race": "non-white", "context": null},
+    {"id": 35, "name": "Xavier", "image": "t1_xavier_m_n", "gender": "male", "race": "non-white", "context": null}
 ]

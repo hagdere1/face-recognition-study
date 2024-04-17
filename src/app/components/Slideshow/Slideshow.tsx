@@ -1,9 +1,8 @@
 'use client'
-import { images_t1, images_t2 } from '../../../utils'
 import { useEffect, useState } from "react";
-import Button from '@mui/material/Button';
 import { useTimer } from 'react-use-precision-timer';
 import { useNavigationContext } from '@/app/NavigationProvider';
+import { getT1Images, getT2Images } from "@/utils/images";
 
 type Persona = {
   context?: {
@@ -31,7 +30,12 @@ export default function Slideshow({ hasContext }: SlideshowProps) {
 
   const [data, setData] = useState<Persona[]>([])
 
+  const images_t1 = getT1Images()
+  const images_t2 = getT2Images()
+
   const images = hasContext ? images_t2 : images_t1
+
+  console.log('images: ', images)
 
   const timer = useTimer({ delay: 5000 }, () => setIndex(currentValue => {
     if (currentValue < images.length - 1) {
@@ -83,17 +87,16 @@ export default function Slideshow({ hasContext }: SlideshowProps) {
   const getImageSrc = (): string => {
     const personaImage = data[index].image
 
-    const image = images.find(image => {
-      const fileName = image.src.split('/').pop()
+    const image = images.find((image: any) => {
+      const fileName = image.default.src.split('/').pop()
       const imageName = fileName?.split('.')[0]
       return personaImage === imageName
     })
 
-    return image?.src || ""
+    return image?.default.src || ""
   }
 
   if (!data.length) {
-    // return <div style={{ marginTop: 36 }}>Loading...</div>
     return null
   }
 

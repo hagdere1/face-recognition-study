@@ -48,7 +48,7 @@ export default function Survey({ setSurveyResponses, isPreTrial }: SurveyProps) 
     }
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 36, width: 700 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 700 }}>
             <h2 style={{ color: 'grey', marginBottom: 36 }}>{isPreTrial ? 'Pre-Trial' : 'Post-Trial'} Survey</h2>
 
             <div style={{ display: 'flex', justifyContent: 'flex-start', width: '100%' }}>

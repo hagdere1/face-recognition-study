@@ -1,0 +1,76 @@
+[
+    {
+        "id": 0,
+        "name": "Malik",
+        "image": "t1_male_white_1",
+        "gender": "male",
+        "race": "white",
+        "context": null
+    },
+    {
+        "id": 1,
+        "name": "Shoshana",
+        "image": "t1_female_white_1",
+        "gender": "female",
+        "race": "white",
+        "context": null
+    },
+    {
+        "id": 2,
+        "name": "Stephania",
+        "image": "t1_female_asian_1",
+        "gender": "female",
+        "race": "asian",
+        "context": null
+    },
+
+    {
+        "id": 3,
+        "name": "Joey",
+        "image": "t1_male_white_2",
+        "gender": "male",
+        "race": "white",
+        "context": null
+    },
+    {
+        "id": 4,
+        "name": "Clara",
+        "image": "t1_female_white_2",
+        "gender": "female",
+        "race": "white",
+        "context": null
+    },
+    {
+        "id": 5,
+        "name": "Grace",
+        "image": "t1_female_asian_2",
+        "gender": "female",
+        "race": "asian",
+        "context": null
+    },
+
+    {
+        "id": 6,
+        "name": "Fannie",
+        "image": "t1_female_asian_3",
+        "gender": "female",
+        "race": "asian",
+        "context": null
+    },
+    {
+        "id": 7,
+        "name": "Henrietta",
+        "image": "t1_female_white_3",
+        "gender": "female",
+        "race": "white",
+        "context": null
+    },
+    {
+        "id": 8,
+        "name": "George",
+        "image": "t1_male_white_3",
+        "gender": "male",
+        "race": "white",
+        "context": null
+    }
+]

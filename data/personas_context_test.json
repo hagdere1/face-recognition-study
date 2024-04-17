@@ -1,0 +1,113 @@
+[
+    {
+        "id": 9,
+        "name": "Tasha",
+        "image": "t2_female_black_1",
+        "gender": "female",
+        "race": "black",
+        "context": {
+            "sentence": "Tasha enjoys working with her uncles.",
+            "hasFamily": true,
+            "emotionalValency": "positive"
+        }
+    },
+    {
+        "id": 10,
+        "name": "Michelle",
+        "image": "t2_female_black_2",
+        "gender": "female",
+        "race": "black",
+        "context": {
+            "sentence": "Michelle loves when her baby brother hugs her.",
+            "hasFamily": true,
+            "emotionalValency": "positive"
+        }
+    },
+    {
+        "id": 11,
+        "name": "Maria",
+        "image": "t2_female_hispanic_1",
+        "gender": "female",
+        "race": "hispanic",
+        "context": {
+            "sentence": "Maria makes sure her puppy is fed every night.",
+            "hasFamily": true,
+            "emotionalValency": "positive"
+        }
+    },
+
+    {
+        "id": 12,
+        "name": "Janet",
+        "image": "t2_female_hispanic_2",
+        "gender": "female",
+        "race": "hispanic",
+        "context": {
+            "sentence": "Janet made a lot of friends in high school.",
+            "hasFamily": true,
+            "emotionalValency": "positive"
+        }
+    },
+    {
+        "id": 13,
+        "name": "Rose",
+        "image": "t2_female_hispanic_3",
+        "gender": "female",
+        "race": "hispanic",
+        "context": {
+            "sentence": "Rose enjoys working with her uncles",
+            "hasFamily": true,
+            "emotionalValency": "positive"
+        }
+    },
+    {
+        "id": 14,
+        "name": "Cedric",
+        "image": "t2_male_black_1",
+        "gender": "male",
+        "race": "black",
+        "context": {
+            "sentence": "Cedric's aunts and uncles play board games with him.",
+            "hasFamily": true,
+            "emotionalValency": "positive"
+        }
+    },
+
+    {
+        "id": 15,
+        "name": "Garfield",
+        "image": "t2_male_black_2",
+        "gender": "male",
+        "race": "black",
+        "context": {
+            "sentence": "Garfield loves rocking his newborn baby to sleep.",
+            "hasFamily": true,
+            "emotionalValency": "positive"
+        }
+    },
+    {
+        "id": 16,
+        "name": "Marcus",
+        "image": "t2_male_hispanic_1",
+        "gender": "male",
+        "race": "hispanic",
+        "context": {
+            "sentence": "Marcus works in the same field as his cousin.",
+            "hasFamily": true,
+            "emotionalValency": "positive"
+        }
+    },
+    {
+        "id": 17,
+        "name": "Anthony",
+        "image": "t2_male_hispanic_2",
+        "gender": "male",
+        "race": "hispanic",
+        "context": {
+            "sentence": "Anthony has the same name as his cousin.",
+            "hasFamily": true,
+            "emotionalValency": "positive"
+        }
+    }
+
+]
