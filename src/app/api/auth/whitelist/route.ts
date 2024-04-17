@@ -5,11 +5,10 @@ import connectDB from '../../../../../db';
 connectDB()
 
 export async function GET(req: Request) {
-    try {
-        const email = req.url.split('?')[1].split('=')[1]
-        const user = await UserDetail.findOne({ email }).exec()
+    const email = req.url.split('?')[1].split('=')[1]
 
-        console.log('user: ', user)
+    try {
+        const user = await UserDetail.findOne({ email }).exec()
 
         if (!user) {
             throw new Error('User not found')
