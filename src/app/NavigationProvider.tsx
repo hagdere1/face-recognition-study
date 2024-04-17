@@ -1,6 +1,7 @@
 import { createContext, PropsWithChildren, useContext, useState } from "react";
 import { useAuth } from "./AuthProvider";
 import Cookies from 'js-cookie'
+import { BASE_URL } from "./constants/urls";
 
 const NavigationContext = createContext<{
     showQuitDialog: boolean;
@@ -30,7 +31,7 @@ const NavigationProvider = ({ children }: PropsWithChildren<{}>) => {
     
     const quit = async () => {
         try {
-            await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/users/${user?._id}/quit`, {
+            await fetch(`${BASE_URL}api/users/${user?._id}/quit`, {
                 method: 'PUT',
                 headers: {
                     Authorization: `Bearer ${Cookies.get(process.env.NEXT_PUBLIC_AUTH_TOKEN_COOKIE_NAME || "")}`

@@ -3,6 +3,7 @@ import { DataGrid, GridColDef, GridRowId } from '@mui/x-data-grid';
 import { Button, Dialog } from '@mui/material';
 import { useState } from 'react';
 import Cookies from 'js-cookie'
+import { BASE_URL } from '@/app/constants/urls';
 
 type DeleteModalProps = {
     close: () => void,
@@ -13,7 +14,7 @@ type DeleteModalProps = {
 function DeleteModal({ close, userId, refetch }: DeleteModalProps) {
     const confirm = async () => {
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/users/${userId}`, {
+            const res = await fetch(`${BASE_URL}api/users/${userId}`, {
                 method: 'DELETE',
                 headers: {
                     Authorization: `Bearer ${Cookies.get(process.env.NEXT_PUBLIC_AUTH_TOKEN_COOKIE_NAME || "")}`,

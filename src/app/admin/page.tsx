@@ -8,6 +8,7 @@ import { NUM_RESPONSES } from "../constants/responses"
 import Cookies from 'js-cookie'
 import UsersTable from "../components/UsersTable"
 import { AuthManager } from "../AuthManager"
+import { BASE_URL } from "../constants/urls"
 
 type Member = {
     email: string,
@@ -26,7 +27,7 @@ export default function AdminView() {
 
     const fetchUsers = async () => {
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/users`, {
+            const res = await fetch(`${BASE_URL}api/users`, {
                 headers: {
                     Authorization: `Bearer ${Cookies.get(process.env.NEXT_PUBLIC_AUTH_TOKEN_COOKIE_NAME || "")}`
                 }
@@ -44,7 +45,7 @@ export default function AdminView() {
 
     const fetchResults = async () => {
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/results`, {
+            const res = await fetch(`${BASE_URL}api/results`, {
                 headers: {
                     Authorization: `Bearer ${Cookies.get(process.env.NEXT_PUBLIC_AUTH_TOKEN_COOKIE_NAME || "")}`
                 }
@@ -77,7 +78,7 @@ export default function AdminView() {
         }
 
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/users`, { 
+            const res = await fetch(`${BASE_URL}api/users`, { 
                 method: 'POST', 
                 headers: {
                     Authorization: `Bearer ${Cookies.get(process.env.NEXT_PUBLIC_AUTH_TOKEN_COOKIE_NAME || "")}`,
