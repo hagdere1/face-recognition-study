@@ -49,7 +49,7 @@ export default function LoggedInRoutes() {
         const data = await res.json()
         setResponses({
           ...responses,
-          surveyPreTrial: data
+          surveyPreTrial: data.surveyPreTrial
         })
         proceed()
       }
@@ -71,9 +71,10 @@ export default function LoggedInRoutes() {
 
       if (res.ok) {
         const data = await res.json()
+        console.log("DATA: ", data)
         setResponses({
           ...responses,
-          trial1: data
+          trial1: data.trial2
         })
       }
     } catch (err) {
@@ -96,7 +97,7 @@ export default function LoggedInRoutes() {
         const data = await res.json()
         setResponses({
           ...responses,
-          trial2: data
+          trial2: data.trial1
         })
       }
     } catch (err) {
@@ -119,7 +120,7 @@ export default function LoggedInRoutes() {
         const data = await res.json()
         setResponses({
           ...responses,
-          surveyPostTrial: data
+          surveyPostTrial: data.surveyPostTrial
         })
         proceed()
       }
@@ -135,6 +136,8 @@ export default function LoggedInRoutes() {
   if (!user) {
     return null
   }
+
+  console.log(responses)
 
   const STEPS = [
     <Instructions key={'step_0'} text={INSTRUCTIONS.START} />,
