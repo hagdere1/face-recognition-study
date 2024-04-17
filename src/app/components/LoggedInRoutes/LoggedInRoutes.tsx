@@ -74,7 +74,7 @@ export default function LoggedInRoutes() {
         console.log("DATA: ", data)
         setResponses({
           ...responses,
-          trial1: data.trial2
+          trial1: data.trial1
         })
       }
     } catch (err) {
@@ -97,7 +97,7 @@ export default function LoggedInRoutes() {
         const data = await res.json()
         setResponses({
           ...responses,
-          trial2: data.trial1
+          trial2: data.trial2
         })
       }
     } catch (err) {
@@ -160,8 +160,8 @@ export default function LoggedInRoutes() {
   ]
 
   return (
-    <main style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: 36}}>
-      <h1>Face Recognition Study</h1>
+    <main style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: 36, paddingTop: 0 }}>
+      <h1 style={{ marginBottom: 36 }}>Face Recognition Study</h1>
       {/* {user.role === 'admin' && stepIndex < STEPS.length - 1 && (
         <>
           <Button onClick={proceed}>Skip</Button>

@@ -17,7 +17,7 @@ export default function Layout({ children }: LayoutProps) {
     return (
         <>
             {user && (
-                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 24px 0 24px' }}>
+                <div style={{ display: 'flex', justifyContent: user.role === ROLE.ADMIN ? 'space-between' : 'flex-end', padding: '12px 24px 0 24px' }}>
                     {user.role === ROLE.ADMIN && (
                         <div>
                             <Button onClick={() => router.push('/admin')} style={{ marginRight: 8 }}>ADMIN DASHBOARD</Button>
