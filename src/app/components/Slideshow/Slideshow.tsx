@@ -35,8 +35,6 @@ export default function Slideshow({ hasContext }: SlideshowProps) {
 
   const images = hasContext ? images_t2 : images_t1
 
-  console.log('images: ', images)
-
   const timer = useTimer({ delay: 5000 }, () => setIndex(currentValue => {
     if (currentValue < images.length - 1) {
       return currentValue + 1 

@@ -71,7 +71,6 @@ export default function LoggedInRoutes() {
 
       if (res.ok) {
         const data = await res.json()
-        console.log("DATA: ", data)
         setResponses({
           ...responses,
           trial1: data.trial1
