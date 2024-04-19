@@ -84,7 +84,6 @@ export async function GET(req: Request) {
 
         // Get all the users
         const users = await UserDetail.find({
-            role: "user",
             trial1: { $ne: null },
             trial2: { $ne: null }
         }).exec()
