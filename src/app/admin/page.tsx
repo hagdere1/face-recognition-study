@@ -9,6 +9,9 @@ import Cookies from 'js-cookie'
 import UsersTable from "../components/UsersTable"
 import { AuthManager } from "../AuthManager"
 import { BASE_URL } from "../constants/urls"
+import { DataGrid, GridColumnHeaderParams } from "@mui/x-data-grid"
+import { randomUUID } from "crypto"
+import SurveyPreTrialResults from "../components/FullResults/SurveyPreTrialResults/SurveyPreTrialResults"
 
 type Member = {
     email: string,
@@ -24,6 +27,7 @@ export default function AdminView() {
     const [role, setRole] = useState<string>('user')
     const [members, setMembers] = useState<Member[]>([])
     const [results, setResults] = useState()
+    const [fullResults, setFullResults] = useState()
 
     const fetchUsers = async () => {
         try {
@@ -61,10 +65,29 @@ export default function AdminView() {
         }
     }
 
+    const fetchFullResults = async () => {
+        try {
+            const res = await fetch(`${BASE_URL}api/full-results`, {
+                headers: {
+                    Authorization: `Bearer ${Cookies.get(process.env.NEXT_PUBLIC_AUTH_TOKEN_COOKIE_NAME || "")}`
+                }
+            })
+            if (!res.ok) {
+                throw new Error('Failed to fetch')
+            }
+            const data = await res.json()
+
+            setFullResults(data)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     useEffect(() => {
         if (user?.role === ROLE.ADMIN) {
             fetchUsers()
             fetchResults()
+            fetchFullResults()
         }
     }, [user?.role])
 
@@ -205,9 +228,9 @@ export default function AdminView() {
                     </div>
                 </div>
 
-                <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36 }}>
+                <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
                     <div style={{ marginBottom: 36, width: '100%' }}>
-                        <h3>Results</h3>
+                        <h3>Results: Overview</h3>
                         <div style={{ display: 'flex', marginTop: 24 }}>
                             <div style={{ padding: 24, borderRadius: 6, width: '25%', backgroundColor: '#fff', marginRight: 36 }}>
                                 {/* @ts-ignore */}
@@ -252,6 +275,14 @@ export default function AdminView() {
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
+                    <SurveyPreTrialResults results={fullResults} role={ROLE.TESTER} />
+                </div>
+
+                <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
+                    <SurveyPreTrialResults results={fullResults} role={ROLE.USER} />
                 </div>
             </div>
         </AuthManager>
