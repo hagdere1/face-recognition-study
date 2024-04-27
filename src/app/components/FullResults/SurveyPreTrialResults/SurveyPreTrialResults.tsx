@@ -2,7 +2,7 @@ import { NUM_RESPONSES } from "@/app/constants/responses"
 import { DataGrid, GridColumnHeaderParams } from "@mui/x-data-grid"
 
 type SurveyPreTrialResultsProps = {
-    results: any[],
+    results: any[] | undefined,
     role: string
 }
 
@@ -11,6 +11,7 @@ export default function SurveyPreTrialResults({ results, role }: SurveyPreTrialR
         <div style={{ width: '100%' }}>
             <h3>[{role.toUpperCase()}] Results: Pre-Trial Survey</h3>
             <div style={{ marginTop: 24 }}>
+                {/* @ts-ignore */}
                 {results?.surveyPreTrial.map((question: any) => {
                     const renderHeader = (params: GridColumnHeaderParams) => <strong>{params.colDef.headerName}</strong>
                     const columns = [
@@ -43,7 +44,7 @@ export default function SurveyPreTrialResults({ results, role }: SurveyPreTrialR
                             disableColumnSorting
                             disableDensitySelector
                             hideFooter
-                            rows={question.results.map(result => ({ 
+                            rows={question.results.map((result: any) => ({ 
                                 id: crypto.randomUUID(),
                                 option: result.option,
 

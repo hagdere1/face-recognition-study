@@ -27,7 +27,7 @@ export default function AdminView() {
     const [role, setRole] = useState<string>('user')
     const [members, setMembers] = useState<Member[]>([])
     const [results, setResults] = useState()
-    const [fullResults, setFullResults] = useState()
+    const [fullResults, setFullResults] = useState<any[]>()
 
     const fetchUsers = async () => {
         try {
