@@ -7,38 +7,47 @@ export const getResultsForRole = (users: any[], role: string) => {
         orphan: {
             trial1: {
                 time: 0,
-                accuracy: 0
+                accuracy: 0,
+                count: 0
             },
             trial2: {
                 time: 0,
-                accuracy: 0
+                accuracy: 0,
+                count: 0
             },
             count: numOrphans
         },
         control: {
             trial1: {
                 time: 0,
-                accuracy: 0
+                accuracy: 0,
+                count: 0
             },
             trial2: {
                 time: 0,
-                accuracy: 0
+                accuracy: 0,
+                count: 0
             },
             count: numControl
         }
     }
 
-    for (let i = 0; i < users.length; i++) {
-        const user = users[i]
-
+    for (let i = 0; i < group.length; i++) {
+        const user = group[i]
         if (user.group === 'orphan') {
+            runningTotals.orphan.trial1.count += 1
             runningTotals.orphan.trial1.time += user.trial1.results.time
             runningTotals.orphan.trial1.accuracy += user.trial1.results.accuracy
+
+            runningTotals.orphan.trial2.count += 1
             runningTotals.orphan.trial2.time += user.trial2.results.time
             runningTotals.orphan.trial2.accuracy += user.trial2.results.accuracy
         } else {
+            runningTotals.control.trial1.count += 1
             runningTotals.control.trial1.time += user.trial1.results.time
             runningTotals.control.trial1.accuracy += user.trial1.results.accuracy
+
+            runningTotals.control.trial2.count += 1
             runningTotals.control.trial2.time += user.trial2.results.time
             runningTotals.control.trial2.accuracy += user.trial2.results.accuracy
         }
@@ -46,15 +55,15 @@ export const getResultsForRole = (users: any[], role: string) => {
 
     const averages = { ...runningTotals }
 
-    averages.orphan.trial1.time = runningTotals.orphan.trial1.time / numOrphans
-    averages.orphan.trial1.accuracy = runningTotals.orphan.trial1.accuracy / numOrphans
-    averages.orphan.trial2.time = runningTotals.orphan.trial2.time / numOrphans
-    averages.orphan.trial2.accuracy = runningTotals.orphan.trial2.accuracy / numOrphans
+    averages.orphan.trial1.time = runningTotals.orphan.trial1.time / runningTotals.orphan.trial1.count
+    averages.orphan.trial1.accuracy = runningTotals.orphan.trial1.accuracy / runningTotals.orphan.trial1.count
+    averages.orphan.trial2.time = runningTotals.orphan.trial2.time / runningTotals.orphan.trial2.count
+    averages.orphan.trial2.accuracy = runningTotals.orphan.trial2.accuracy / runningTotals.orphan.trial2.count
 
-    averages.control.trial1.time = runningTotals.control.trial1.time / numControl
-    averages.control.trial1.accuracy = runningTotals.control.trial1.accuracy / numControl
-    averages.control.trial2.time = runningTotals.control.trial2.time / numControl
-    averages.control.trial2.accuracy = runningTotals.control.trial2.accuracy / numControl
+    averages.control.trial1.time = runningTotals.control.trial1.time / runningTotals.control.trial1.count
+    averages.control.trial1.accuracy = runningTotals.control.trial1.accuracy / runningTotals.control.trial1.count
+    averages.control.trial2.time = runningTotals.control.trial2.time / runningTotals.control.trial2.count
+    averages.control.trial2.accuracy = runningTotals.control.trial2.accuracy / runningTotals.control.trial2.count
 
     return averages
 }

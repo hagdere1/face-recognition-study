@@ -3,7 +3,7 @@ import { Button, InputLabel, MenuItem, Select, TextField } from "@mui/material"
 import { SelectChangeEvent } from "@mui/material/Select/SelectInput"
 import { useEffect, useState } from "react"
 import { useAuth } from "../AuthProvider"
-import { GROUP, ROLE } from "../constants/roles"
+import { ROLE } from "../constants/roles"
 import { NUM_RESPONSES } from "../constants/responses"
 import Cookies from 'js-cookie'
 import UsersTable from "../components/UsersTable"
