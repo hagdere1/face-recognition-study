@@ -1,5 +1,5 @@
 'use client'
-import { Button, InputLabel, MenuItem, Select, TextField } from "@mui/material"
+import { Box, Button, InputLabel, MenuItem, Select, Tab, Tabs, TextField, Typography } from "@mui/material"
 import { SelectChangeEvent } from "@mui/material/Select/SelectInput"
 import { useEffect, useState } from "react"
 import { useAuth } from "../AuthProvider"
@@ -23,9 +23,12 @@ type Member = {
 export default function AdminView() {
     const { status, user } = useAuth()
 
+    const [tab, setTab] = useState(0)
+
     const [email, setEmail] = useState('')
     const [group, setGroup] = useState<string>('')
     const [role, setRole] = useState<string>('user')
+
     const [members, setMembers] = useState<Member[]>([])
     const [results, setResults] = useState()
     const [fullResults, setFullResults] = useState<any[]>()
@@ -129,6 +132,10 @@ export default function AdminView() {
         setGroup(event.target.value as string);
     };
 
+    const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+        setTab(newValue);
+    };
+
     const isSubmitDisabled = () => {
         if (role === 'user') {
             return !(group && email)
@@ -173,139 +180,196 @@ export default function AdminView() {
             <div style={{ padding: 36, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <h1 style={{ marginBottom: 36 }}>Admin Dashboard</h1>
 
-                <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
-                    <div>
-                        <div style={{ padding: 24, borderRadius: 6, width: 300, backgroundColor: '#fff', marginRight: 36 }}>
-                            <h3>Add a user</h3>
+                <Box sx={{ width: '100%' }}>
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                        <Tabs value={tab} onChange={handleTabChange} aria-label="basic tabs example">
+                            <Tab label="Create Account" {...a11yProps(0)} />
+                            <Tab label="Results: Test" {...a11yProps(1)} />
+                            <Tab label="Results: Actual" {...a11yProps(2)} />
+                        </Tabs>
+                    </Box>
 
-                            <div style={{ marginBottom: 24, marginTop: 24 }}>
-                                <InputLabel id="role-select-label">Role</InputLabel>
-                                <Select
-                                    labelId="role-select-label"
-                                    id="role-select"
-                                    value={role}
-                                    label="Role"
-                                    onChange={handleRoleChange}
-                                    fullWidth
-                                >
-                                    <MenuItem value={ROLE.USER}>Participant</MenuItem>
-                                    <MenuItem value={ROLE.TESTER}>Tester</MenuItem>
-                                    <MenuItem value={ROLE.ADMIN}>Admin</MenuItem>
-                                </Select>
-                            </div>
+                    <CustomTabPanel value={tab} index={0}>
+                        <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
+                            <div>
+                                <div style={{ padding: 24, borderRadius: 6, width: 300, backgroundColor: '#fff', marginRight: 36 }}>
+                                    <h3>Add a user</h3>
 
-                            {role !== ROLE.ADMIN && (
-                                <div style={{ marginBottom: 24, marginTop: 24 }}>
-                                    <InputLabel id="group-select-label">Group</InputLabel>
-                                    <Select
-                                        labelId="group-select-label"
-                                        id="group-select"
-                                        value={group}
-                                        label="Group"
-                                        onChange={handleGroupChange}
-                                        fullWidth
-                                    >
-                                        <MenuItem value={'control'}>Control</MenuItem>
-                                        <MenuItem value={'orphan'}>Orphan</MenuItem>
-                                    </Select>
+                                    <div style={{ marginBottom: 24, marginTop: 24 }}>
+                                        <InputLabel id="role-select-label">Role</InputLabel>
+                                        <Select
+                                            labelId="role-select-label"
+                                            id="role-select"
+                                            value={role}
+                                            label="Role"
+                                            onChange={handleRoleChange}
+                                            fullWidth
+                                        >
+                                            <MenuItem value={ROLE.USER}>Participant</MenuItem>
+                                            <MenuItem value={ROLE.TESTER}>Tester</MenuItem>
+                                            <MenuItem value={ROLE.ADMIN}>Admin</MenuItem>
+                                        </Select>
+                                    </div>
+
+                                    {role !== ROLE.ADMIN && (
+                                        <div style={{ marginBottom: 24, marginTop: 24 }}>
+                                            <InputLabel id="group-select-label">Group</InputLabel>
+                                            <Select
+                                                labelId="group-select-label"
+                                                id="group-select"
+                                                value={group}
+                                                label="Group"
+                                                onChange={handleGroupChange}
+                                                fullWidth
+                                            >
+                                                <MenuItem value={'control'}>Control</MenuItem>
+                                                <MenuItem value={'orphan'}>Orphan</MenuItem>
+                                            </Select>
+                                        </div>
+                                    )}
+                                    
+                                    <div style={{ marginBottom: 24 }}>
+                                        <InputLabel id="email-input-label">Email Address</InputLabel>
+                                        <TextField 
+                                            type='email'
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            value={email}
+                                            fullWidth
+                                        />
+                                    </div>
+
+                                    <Button fullWidth variant='contained' onClick={createAccount} disabled={isSubmitDisabled()}>Add</Button>
                                 </div>
-                            )}
-                            
-                            <div style={{ marginBottom: 24 }}>
-                                <InputLabel id="email-input-label">Email Address</InputLabel>
-                                <TextField 
-                                    type='email'
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    value={email}
-                                    fullWidth
-                                />
                             </div>
 
-                            <Button fullWidth variant='contained' onClick={createAccount} disabled={isSubmitDisabled()}>Add</Button>
-                        </div>
-                    </div>
-
-                    <div style={{ display: 'flex', flex: 1 }}>
-                        <UsersTable users={members} refetch={() => {
-                            fetchUsers()
-                            fetchResults()
-                        }} />
-                    </div>
-                </div>
-
-                <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
-                    <div style={{ marginBottom: 36, width: '100%' }}>
-                        <h3>Results: Overview</h3>
-                        <div style={{ display: 'flex', marginTop: 24 }}>
-                            <div style={{ padding: 24, borderRadius: 6, width: '25%', backgroundColor: '#fff', marginRight: 36 }}>
-                                {/* @ts-ignore */}
-                                <div style={{ marginBottom: 24 }}><strong>Orphans</strong> ({results?.user.orphan.count})</div>
-
-                                {/* @ts-ignore */}
-                                {resultCard('Trial 1', results?.user.orphan.trial1.time, results?.user.orphan.trial1.accuracy)}
-
-                                {/* @ts-ignore */}
-                                {resultCard('Trial 2', results?.user.orphan.trial2.time, results?.user.orphan.trial2.accuracy)}
-                            </div>
-                            <div style={{ padding: 24, borderRadius: 6, width: '25%', backgroundColor: '#fff', marginRight: 36 }}>
-                                {/* @ts-ignore */}
-                                <div style={{ marginBottom: 24 }}><strong>Control</strong> ({results?.user.control.count})</div>
-                                
-                                {/* @ts-ignore */}
-                                {resultCard('Trial 1', results?.user.control.trial1.time, results?.user.control.trial1.accuracy)}
-
-                                {/* @ts-ignore */}
-                                {resultCard('Trial 2', results?.user.control.trial2.time, results?.user.control.trial2.accuracy)}
-                            </div>
-                            {/* TESTER RESULTS */}
-                            <div style={{ padding: 24, borderRadius: 6, width: '25%', backgroundColor: '#fff', marginRight: 36 }}>
-                                {/* @ts-ignore */}
-                                <div style={{ marginBottom: 24 }}><strong>Test: Orphans</strong> ({results?.tester.orphan.count})</div>
-
-                                {/* @ts-ignore */}
-                                {resultCard('Trial 1', results?.tester.orphan.trial1.time, results?.tester.orphan.trial1.accuracy)}
-
-                                {/* @ts-ignore */}
-                                {resultCard('Trial 2', results?.tester.orphan.trial2.time, results?.tester.orphan.trial2.accuracy)}
-                            </div>
-                            <div style={{ padding: 24, borderRadius: 6, width: '25%', backgroundColor: '#fff' }}>
-                                {/* @ts-ignore */}
-                                <div style={{ marginBottom: 24 }}><strong>Test: Control</strong> ({results?.tester.control.count})</div>
-                                
-                                {/* @ts-ignore */}
-                                {resultCard('Trial 1', results?.tester.control.trial1.time, results?.tester.control.trial1.accuracy)}
-
-                                {/* @ts-ignore */}
-                                {resultCard('Trial 2', results?.tester.control.trial2.time, results?.tester.control.trial2.accuracy)}
+                            <div style={{ display: 'flex', flex: 1 }}>
+                                <UsersTable users={members} refetch={() => {
+                                    fetchUsers()
+                                    fetchResults()
+                                }} />
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </CustomTabPanel>
 
-                <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
-                    <SurveyPreTrialResults results={fullResults} role={ROLE.TESTER} />
-                </div>
+                    <CustomTabPanel value={tab} index={1}>
+                        <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
+                            <div style={{ marginBottom: 36, width: '100%' }}>
+                                <h3>Results: Overview</h3>
+                                <div style={{ display: 'flex', marginTop: 24 }}>
+                                    {/* TESTER RESULTS */}
+                                    <div style={{ padding: 24, borderRadius: 6, width: '25%', backgroundColor: '#fff', marginRight: 36 }}>
+                                        {/* @ts-ignore */}
+                                        <div style={{ marginBottom: 24 }}><strong>Test: Orphans</strong> ({results?.tester.orphan.count})</div>
 
-                <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
-                    <SurveyPreTrialResults results={fullResults} role={ROLE.USER} />
-                </div>
+                                        {/* @ts-ignore */}
+                                        {resultCard('Trial 1', results?.tester.orphan.trial1.time, results?.tester.orphan.trial1.accuracy)}
 
-                <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
-                    <TrialResults results={fullResults} role={ROLE.TESTER} />
-                </div>
+                                        {/* @ts-ignore */}
+                                        {resultCard('Trial 2', results?.tester.orphan.trial2.time, results?.tester.orphan.trial2.accuracy)}
+                                    </div>
+                                    <div style={{ padding: 24, borderRadius: 6, width: '25%', backgroundColor: '#fff' }}>
+                                        {/* @ts-ignore */}
+                                        <div style={{ marginBottom: 24 }}><strong>Test: Control</strong> ({results?.tester.control.count})</div>
+                                        
+                                        {/* @ts-ignore */}
+                                        {resultCard('Trial 1', results?.tester.control.trial1.time, results?.tester.control.trial1.accuracy)}
 
-                <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
-                    <TrialResults results={fullResults} role={ROLE.USER} />
-                </div>
+                                        {/* @ts-ignore */}
+                                        {resultCard('Trial 2', results?.tester.control.trial2.time, results?.tester.control.trial2.accuracy)}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
-                    <IndividualResults users={members.filter(member => member.surveyPostTrial && member.role === ROLE.TESTER)} role={ROLE.TESTER} />
-                </div>
+                        <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
+                            <SurveyPreTrialResults results={fullResults} role={ROLE.TESTER} />
+                        </div>
 
-                <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
-                    <IndividualResults users={members.filter(member => member.surveyPostTrial && member.role === ROLE.USER)} role={ROLE.USER} />
-                </div>
+                        <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
+                            <TrialResults results={fullResults} role={ROLE.TESTER} />
+                        </div>
+
+                        <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
+                            <IndividualResults users={members.filter(member => member.surveyPostTrial && member.role === ROLE.TESTER)} role={ROLE.TESTER} />
+                        </div>
+                    </CustomTabPanel>
+
+                    <CustomTabPanel value={tab} index={2}>
+                    <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
+                            <div style={{ marginBottom: 36, width: '100%' }}>
+                                <h3>Results: Overview</h3>
+                                <div style={{ display: 'flex', marginTop: 24 }}>
+                                    <div style={{ padding: 24, borderRadius: 6, width: '25%', backgroundColor: '#fff', marginRight: 36 }}>
+                                        {/* @ts-ignore */}
+                                        <div style={{ marginBottom: 24 }}><strong>Orphans</strong> ({results?.user.orphan.count})</div>
+
+                                        {/* @ts-ignore */}
+                                        {resultCard('Trial 1', results?.user.orphan.trial1.time, results?.user.orphan.trial1.accuracy)}
+
+                                        {/* @ts-ignore */}
+                                        {resultCard('Trial 2', results?.user.orphan.trial2.time, results?.user.orphan.trial2.accuracy)}
+                                    </div>
+                                    <div style={{ padding: 24, borderRadius: 6, width: '25%', backgroundColor: '#fff', marginRight: 36 }}>
+                                        {/* @ts-ignore */}
+                                        <div style={{ marginBottom: 24 }}><strong>Control</strong> ({results?.user.control.count})</div>
+                                        
+                                        {/* @ts-ignore */}
+                                        {resultCard('Trial 1', results?.user.control.trial1.time, results?.user.control.trial1.accuracy)}
+
+                                        {/* @ts-ignore */}
+                                        {resultCard('Trial 2', results?.user.control.trial2.time, results?.user.control.trial2.accuracy)}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
+                            <SurveyPreTrialResults results={fullResults} role={ROLE.USER} />
+                        </div>
+
+                        <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
+                            <TrialResults results={fullResults} role={ROLE.USER} />
+                        </div>
+
+                        <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
+                            <IndividualResults users={members.filter(member => member.surveyPostTrial && member.role === ROLE.USER)} role={ROLE.USER} />
+                        </div>
+                    </CustomTabPanel>
+                </Box>
             </div>
         </AuthManager>
     )
 }
+
+interface TabPanelProps {
+    children?: React.ReactNode;
+    index: number;
+    value: number;
+  }
+
+function CustomTabPanel(props: TabPanelProps) {
+    const { children, value, index, ...other } = props;
+  
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box sx={{ p: 3 }}>
+            <Typography>{children}</Typography>
+          </Box>
+        )}
+      </div>
+    );
+  }
+
+  function a11yProps(index: number) {
+    return {
+      id: `simple-tab-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`,
+    };
+  }  

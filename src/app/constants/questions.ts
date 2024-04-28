@@ -73,16 +73,6 @@ export const PRETRIAL_QUESTIONS = [
         ]
     },
     {
-        id: "dailyPeopleSpeakingKnowWell",
-        question: "Of the people you speak with each day, how many would you say know you well?",
-        options: [
-            "Zero",
-            "Not much (work solitarily most of the time)",
-            "A moderate amount (meeting with small teams regularly)",
-            "A large amount (interacting with groups of people)"
-        ]
-    },
-    {
         id: "relationshipStatus",
         question: "What is your relationship status?",
         options: [

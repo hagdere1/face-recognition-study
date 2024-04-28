@@ -70,6 +70,8 @@ export const getResultsForRole = (users: any[], role: string) => {
 
 export const getTrialResultsForAttribute = (users: any[], role: string, attribute: string[]) => {
     const group = users.filter(user => user.role === role)
+    const numOrphans = group.filter(user => user.group === 'orphan').length
+    const numControl = group.filter(user => user.group === 'control').length
     
     const runningTotals = {
         orphan: {
@@ -82,7 +84,8 @@ export const getTrialResultsForAttribute = (users: any[], role: string, attribut
                 time: 0,
                 accuracy: 0,
                 count: 0
-            }
+            },
+            count: numOrphans
         },
         control: {
             trial1: {
@@ -94,7 +97,8 @@ export const getTrialResultsForAttribute = (users: any[], role: string, attribut
                 time: 0,
                 accuracy: 0,
                 count: 0
-            }
+            },
+            count: numControl
         }
     }
 
