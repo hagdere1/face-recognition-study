@@ -5,7 +5,7 @@ import { auth } from '../../firebase-admin';
 import { headers } from "next/headers"
 import { ROLE } from '@/app/constants/roles';
 import { getResultsForRole, getTrialResultsForAttribute } from '../utils';
-import { PRETRIAL_QUESTIONS } from '@/app/constants/questions';
+import { POSTTRIAL_QUESTIONS, PRETRIAL_QUESTIONS } from '@/app/constants/questions';
 
 connectDB()
 
@@ -21,6 +21,34 @@ const getPreTrialSurveyResults = (users: any[]) => {
 
         question.options.forEach(option => {
             const optionUsers = users.filter(user => user.surveyPreTrial.responses[questionIndex].response === option)
+            const averages = getResultsForRole(optionUsers, ROLE.USER)
+            const averagesTest = getResultsForRole(optionUsers, ROLE.TESTER)
+
+            questionResults.results.push({
+                option,
+                user: averages,
+                tester: averagesTest
+            })
+        })
+
+        allResults.push(questionResults)
+    })
+
+    return allResults
+}
+
+const getPostTrialSurveyResults = (users: any[]) => {
+    const allResults: any[] = []
+
+    POSTTRIAL_QUESTIONS.forEach((question, questionIndex) => {
+        const questionResults = {
+            id: question.id,
+            question: question.question,
+            results: [] as any[]
+        }
+
+        question.options.forEach(option => {
+            const optionUsers = users.filter(user => user.surveyPostTrial.responses[questionIndex].response === option)
             const averages = getResultsForRole(optionUsers, ROLE.USER)
             const averagesTest = getResultsForRole(optionUsers, ROLE.TESTER)
 
@@ -98,6 +126,7 @@ export async function GET(req: Request) {
 
         return NextResponse.json({
             surveyPreTrial: getPreTrialSurveyResults(users),
+            surveyPostTrial: getPostTrialSurveyResults(users),
             trials: getTrialResults(users)
         }, { status: 200 })
     } catch (error) {

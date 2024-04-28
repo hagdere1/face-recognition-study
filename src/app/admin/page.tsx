@@ -12,6 +12,7 @@ import { BASE_URL } from "../constants/urls"
 import SurveyPreTrialResults from "../components/FullResults/SurveyPreTrialResults"
 import TrialResults from "../components/FullResults/TrialResults"
 import IndividualResults from "../components/FullResults/IndividualResults"
+import SurveyPostTrialResults from "../components/FullResults/SurveyPostTrialResults"
 
 type Member = {
     email: string,
@@ -254,12 +255,11 @@ export default function AdminView() {
                     <CustomTabPanel value={tab} index={1}>
                         <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
                             <div style={{ marginBottom: 36, width: '100%' }}>
-                                <h3>Results: Overview</h3>
+                                <h3>[TESTER] Results: Overview</h3>
                                 <div style={{ display: 'flex', marginTop: 24 }}>
-                                    {/* TESTER RESULTS */}
                                     <div style={{ padding: 24, borderRadius: 6, width: '25%', backgroundColor: '#fff', marginRight: 36 }}>
                                         {/* @ts-ignore */}
-                                        <div style={{ marginBottom: 24 }}><strong>Test: Orphans</strong> ({results?.tester.orphan.count})</div>
+                                        <div style={{ marginBottom: 24 }}><strong>Orphans</strong> ({results?.tester.orphan.count})</div>
 
                                         {/* @ts-ignore */}
                                         {resultCard('Trial 1', results?.tester.orphan.trial1.time, results?.tester.orphan.trial1.accuracy)}
@@ -269,7 +269,7 @@ export default function AdminView() {
                                     </div>
                                     <div style={{ padding: 24, borderRadius: 6, width: '25%', backgroundColor: '#fff' }}>
                                         {/* @ts-ignore */}
-                                        <div style={{ marginBottom: 24 }}><strong>Test: Control</strong> ({results?.tester.control.count})</div>
+                                        <div style={{ marginBottom: 24 }}><strong>Control</strong> ({results?.tester.control.count})</div>
                                         
                                         {/* @ts-ignore */}
                                         {resultCard('Trial 1', results?.tester.control.trial1.time, results?.tester.control.trial1.accuracy)}
@@ -292,12 +292,16 @@ export default function AdminView() {
                         <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
                             <IndividualResults users={members.filter(member => member.surveyPostTrial && member.role === ROLE.TESTER)} role={ROLE.TESTER} />
                         </div>
+
+                        <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
+                            <SurveyPostTrialResults results={fullResults} role={ROLE.TESTER} />
+                        </div>
                     </CustomTabPanel>
 
                     <CustomTabPanel value={tab} index={2}>
                     <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
                             <div style={{ marginBottom: 36, width: '100%' }}>
-                                <h3>Results: Overview</h3>
+                                <h3>[USER] Results: Overview</h3>
                                 <div style={{ display: 'flex', marginTop: 24 }}>
                                     <div style={{ padding: 24, borderRadius: 6, width: '25%', backgroundColor: '#fff', marginRight: 36 }}>
                                         {/* @ts-ignore */}
@@ -334,6 +338,10 @@ export default function AdminView() {
                         <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
                             <IndividualResults users={members.filter(member => member.surveyPostTrial && member.role === ROLE.USER)} role={ROLE.USER} />
                         </div>
+
+                        <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
+                            <SurveyPostTrialResults results={fullResults} role={ROLE.USER} />
+                        </div>                       
                     </CustomTabPanel>
                 </Box>
             </div>
