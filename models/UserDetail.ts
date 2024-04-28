@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-import { PersonaSchema } from './Persona'
 
 const SurveySchema = new mongoose.Schema({
     responses: [{
@@ -11,7 +10,15 @@ const SurveySchema = new mongoose.Schema({
 
 const TrialSchema = new mongoose.Schema({
     responses: [{
-        persona: PersonaSchema,
+        persona: {
+            id: String,
+            name: String,
+            gender: String,
+            race: String,
+            emotionalValency: String,
+            hasFamily: Boolean,
+            sentence: String
+        },
         selectedPersonaId: { type: String },
         isCorrect: { type: Boolean },
         time: { type: Number }

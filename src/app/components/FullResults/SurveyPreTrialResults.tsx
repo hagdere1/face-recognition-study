@@ -36,7 +36,7 @@ export default function SurveyPreTrialResults({ results, role }: SurveyPreTrialR
 
                     return (
                         <DataGrid
-                            key={question}
+                            key={question + '_' + role}
                             density="compact"
                             disableRowSelectionOnClick
                             disableColumnFilter

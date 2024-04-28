@@ -15,9 +15,9 @@ type Response = {
 type Persona = {
   context?: {
     sentence: string,
-    hasFamily: boolean
+    hasFamily: boolean,
+    emotionalValency: string
   },
-  emotionalValency: string,
   gender: string,
   id: number,
   image: string,
@@ -102,7 +102,7 @@ export default function FaceSelection({ hasContext, setTrialResponses }: FaceSel
   const fetchPersonasWithContext = async () => {
     const res = await fetch('/api/personas-context')
     const data = await res.json()
-    setData(data)
+    setData(shufflePersonas(data))
   }
 
   useEffect(() => {
@@ -138,6 +138,7 @@ export default function FaceSelection({ hasContext, setTrialResponses }: FaceSel
   const selectImage = (src: string) => {
     const imageName = src.split('/').pop()?.split('.')[0]
     const persona = data[nameIndex]
+    console.log("PERSONA: ", persona)
     const selectedPersona = data.find(persona => persona.image === imageName) as Persona
 
     setResponses([
@@ -145,7 +146,16 @@ export default function FaceSelection({ hasContext, setTrialResponses }: FaceSel
       {
         isCorrect: persona.id === selectedPersona.id,
         time: stopwatch.getElapsedStartedTime(),
-        persona,
+        persona: {
+          id: persona.id,
+          name: persona.name,
+          gender: persona.gender,
+          race: persona.race,
+          // @ts-ignore
+          emotionalValency: persona.context?.emotionalValency,
+          hasFamily: persona.context?.hasFamily,
+          sentence: persona.context?.sentence
+        },
         selectedPersonaId: selectedPersona.id
       }
     ])

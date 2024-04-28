@@ -9,14 +9,15 @@ import Cookies from 'js-cookie'
 import UsersTable from "../components/UsersTable"
 import { AuthManager } from "../AuthManager"
 import { BASE_URL } from "../constants/urls"
-import { DataGrid, GridColumnHeaderParams } from "@mui/x-data-grid"
-import { randomUUID } from "crypto"
-import SurveyPreTrialResults from "../components/FullResults/SurveyPreTrialResults/SurveyPreTrialResults"
+import SurveyPreTrialResults from "../components/FullResults/SurveyPreTrialResults"
+import TrialResults from "../components/FullResults/TrialResults"
+import IndividualResults from "../components/FullResults/IndividualResults"
 
 type Member = {
     email: string,
     group: string | null,
-    role: string
+    role: string,
+    surveyPostTrial: any
 }
 
 export default function AdminView() {
@@ -163,6 +164,10 @@ export default function AdminView() {
         </div>
     )
 
+    if (!results || !fullResults) {
+        return null
+    }
+
     return (
         <AuthManager>
             <div style={{ padding: 36, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -283,6 +288,22 @@ export default function AdminView() {
 
                 <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
                     <SurveyPreTrialResults results={fullResults} role={ROLE.USER} />
+                </div>
+
+                <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
+                    <TrialResults results={fullResults} role={ROLE.TESTER} />
+                </div>
+
+                <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
+                    <TrialResults results={fullResults} role={ROLE.USER} />
+                </div>
+
+                <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
+                    <IndividualResults users={members.filter(member => member.surveyPostTrial && member.role === ROLE.TESTER)} role={ROLE.TESTER} />
+                </div>
+
+                <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
+                    <IndividualResults users={members.filter(member => member.surveyPostTrial && member.role === ROLE.USER)} role={ROLE.USER} />
                 </div>
             </div>
         </AuthManager>
