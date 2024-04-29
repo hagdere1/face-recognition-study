@@ -1,5 +1,5 @@
 import { NUM_RESPONSES } from "@/app/constants/responses"
-import { DataGrid, GridColumnHeaderParams } from "@mui/x-data-grid"
+import { DataGrid, GridColumnHeaderParams, GridToolbar } from "@mui/x-data-grid"
 
 type IndividualResultsProps = {
     users: any[] | undefined,
@@ -26,6 +26,7 @@ export default function IndividualResults({ users, role }: IndividualResultsProp
             <h3>[{role.toUpperCase()}] Results: Individual</h3>
             <div style={{ marginTop: 24 }}>
                 <DataGrid
+                    slots={{ toolbar: GridToolbar }}
                     density="compact"
                     disableRowSelectionOnClick
                     disableColumnFilter

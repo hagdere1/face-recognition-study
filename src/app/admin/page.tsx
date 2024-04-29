@@ -3,7 +3,7 @@ import { Box, Button, InputLabel, MenuItem, Select, Tab, Tabs, TextField, Typogr
 import { SelectChangeEvent } from "@mui/material/Select/SelectInput"
 import { useEffect, useState } from "react"
 import { useAuth } from "../AuthProvider"
-import { ROLE } from "../constants/roles"
+import { ROLE, GROUP } from "../constants/roles"
 import { NUM_RESPONSES } from "../constants/responses"
 import Cookies from 'js-cookie'
 import UsersTable from "../components/UsersTable"
@@ -13,6 +13,7 @@ import SurveyPreTrialResults from "../components/FullResults/SurveyPreTrialResul
 import TrialResults from "../components/FullResults/TrialResults"
 import IndividualResults from "../components/FullResults/IndividualResults"
 import SurveyPostTrialResults from "../components/FullResults/SurveyPostTrialResults"
+import { DataGrid, GridColumnHeaderParams, GridToolbar } from "@mui/x-data-grid"
 
 type Member = {
     email: string,
@@ -153,25 +154,6 @@ export default function AdminView() {
         )
     }
 
-    const resultCard = (title: string, time: number, accuracy: number) => (
-        <div style={{ marginBottom: 24 }}>
-            <div style={{ marginRight: 36, marginBottom: 12 }}><strong>{title}</strong></div>
-
-            <div style={{ display: 'flex' }}>
-                <div style={{ marginRight: 24 }}>
-                    <div style={{ marginBottom: 4, color: '#666' }}>Accuracy:</div>
-                    <div style={{ marginBottom: 4, color: '#666' }}>Total Time:</div>
-                    <div style={{ marginBottom: 4, color: '#666' }}>Avg. Time:</div>
-                </div>
-                <div>
-                    <div style={{ marginBottom: 4 }}>{Math.round(accuracy * 100)}%</div>
-                    <div style={{ marginBottom: 4 }}>{(time / 1000).toFixed(1)}s</div>
-                    <div style={{ marginBottom: 4 }}>{((time / NUM_RESPONSES) / 1000).toFixed(1)}s</div>
-                </div>
-            </div>
-        </div>
-    )
-
     if (!results || !fullResults) {
         return null
     }
@@ -254,29 +236,10 @@ export default function AdminView() {
 
                     <CustomTabPanel value={tab} index={1}>
                         <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
-                            <div style={{ marginBottom: 36, width: '100%' }}>
+                            <div style={{ width: '100%' }}>
                                 <h3>[TESTER] Results: Overview</h3>
-                                <div style={{ display: 'flex', marginTop: 24 }}>
-                                    <div style={{ padding: 24, borderRadius: 6, width: '25%', backgroundColor: '#fff', marginRight: 36 }}>
-                                        {/* @ts-ignore */}
-                                        <div style={{ marginBottom: 24 }}><strong>Orphans</strong> ({results?.tester.orphan.count})</div>
-
-                                        {/* @ts-ignore */}
-                                        {resultCard('Trial 1', results?.tester.orphan.trial1.time, results?.tester.orphan.trial1.accuracy)}
-
-                                        {/* @ts-ignore */}
-                                        {resultCard('Trial 2', results?.tester.orphan.trial2.time, results?.tester.orphan.trial2.accuracy)}
-                                    </div>
-                                    <div style={{ padding: 24, borderRadius: 6, width: '25%', backgroundColor: '#fff' }}>
-                                        {/* @ts-ignore */}
-                                        <div style={{ marginBottom: 24 }}><strong>Control</strong> ({results?.tester.control.count})</div>
-                                        
-                                        {/* @ts-ignore */}
-                                        {resultCard('Trial 1', results?.tester.control.trial1.time, results?.tester.control.trial1.accuracy)}
-
-                                        {/* @ts-ignore */}
-                                        {resultCard('Trial 2', results?.tester.control.trial2.time, results?.tester.control.trial2.accuracy)}
-                                    </div>
+                                <div style={{ display: 'flex' }}>
+                                    <ResultsOverview role={ROLE.TESTER} results={results} />
                                 </div>
                             </div>
                         </div>
@@ -299,30 +262,11 @@ export default function AdminView() {
                     </CustomTabPanel>
 
                     <CustomTabPanel value={tab} index={2}>
-                    <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
-                            <div style={{ marginBottom: 36, width: '100%' }}>
+                        <div style={{ display: 'flex', backgroundColor: '#eee', borderRadius: 8, border: '1px solid #ccc', width: '100%', padding: 36, marginBottom: 36 }}>
+                            <div style={{ width: '100%' }}>
                                 <h3>[USER] Results: Overview</h3>
-                                <div style={{ display: 'flex', marginTop: 24 }}>
-                                    <div style={{ padding: 24, borderRadius: 6, width: '25%', backgroundColor: '#fff', marginRight: 36 }}>
-                                        {/* @ts-ignore */}
-                                        <div style={{ marginBottom: 24 }}><strong>Orphans</strong> ({results?.user.orphan.count})</div>
-
-                                        {/* @ts-ignore */}
-                                        {resultCard('Trial 1', results?.user.orphan.trial1.time, results?.user.orphan.trial1.accuracy)}
-
-                                        {/* @ts-ignore */}
-                                        {resultCard('Trial 2', results?.user.orphan.trial2.time, results?.user.orphan.trial2.accuracy)}
-                                    </div>
-                                    <div style={{ padding: 24, borderRadius: 6, width: '25%', backgroundColor: '#fff', marginRight: 36 }}>
-                                        {/* @ts-ignore */}
-                                        <div style={{ marginBottom: 24 }}><strong>Control</strong> ({results?.user.control.count})</div>
-                                        
-                                        {/* @ts-ignore */}
-                                        {resultCard('Trial 1', results?.user.control.trial1.time, results?.user.control.trial1.accuracy)}
-
-                                        {/* @ts-ignore */}
-                                        {resultCard('Trial 2', results?.user.control.trial2.time, results?.user.control.trial2.accuracy)}
-                                    </div>
+                                <div style={{ display: 'flex' }}>
+                                    <ResultsOverview role={ROLE.USER} results={results} />
                                 </div>
                             </div>
                         </div>
@@ -375,9 +319,70 @@ function CustomTabPanel(props: TabPanelProps) {
     );
   }
 
-  function a11yProps(index: number) {
+function a11yProps(index: number) {
     return {
-      id: `simple-tab-${index}`,
-      'aria-controls': `simple-tabpanel-${index}`,
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
     };
-  }  
+}  
+
+function ResultsOverview({ role, results }: { role: string, results: any }) {
+    const rows = [
+        {
+            id: crypto.randomUUID(),
+            group: 'Control',
+            
+            t1_accuracy: Math.round(results[role].control.trial1.accuracy * 100) + '%',
+            t1_time: (results[role].control.trial1.time / 1000).toFixed(1) + 's',
+            t1_avgtime: ((results[role].control.trial1.time / NUM_RESPONSES) / 1000).toFixed(1) + 's',
+
+            t2_accuracy: Math.round(results[role].control.trial2.accuracy * 100) + '%',
+            t2_time: (results[role].control.trial2.time / 1000).toFixed(1) + 's',
+            t2_avgtime: ((results[role].control.trial2.time / NUM_RESPONSES) / 1000).toFixed(1) + 's'
+        },
+        {
+            id: crypto.randomUUID(),
+            group: 'Experimental',
+            
+            t1_accuracy: Math.round(results[role].orphan.trial1.accuracy * 100) + '%',
+            t1_time: (results[role].orphan.trial1.time / 1000).toFixed(1) + 's',
+            t1_avgtime: ((results[role].orphan.trial1.time / NUM_RESPONSES) / 1000).toFixed(1) + 's',
+
+            t2_accuracy: Math.round(results[role].orphan.trial2.accuracy * 100) + '%',
+            t2_time: (results[role].orphan.trial2.time / 1000).toFixed(1) + 's',
+            t2_avgtime: ((results[role].orphan.trial2.time / NUM_RESPONSES) / 1000).toFixed(1) + 's'
+        }
+    ]
+
+    const renderHeader = (params: GridColumnHeaderParams) => <strong>{params.colDef.headerName}</strong>
+    const columns = [
+        { field: 'group', headerName: 'Group', width: 150, renderHeader },
+
+        { field: 't1_accuracy', headerName: 'T1 Accuracy', width: 150, renderHeader },
+        { field: 't1_time', headerName: 'T1 Time (s)', width: 150, renderHeader },
+        { field: 't1_avgtime', headerName: 'T1 Avg Time (s)', width: 150, renderHeader },
+
+        { field: 't2_accuracy', headerName: 'T2 Accuracy', width: 150, renderHeader },
+        { field: 't2_time', headerName: 'T2 Time (s)', width: 150, renderHeader },
+        { field: 't2_avgtime', headerName: 'T2 Avg Time (s)', width: 150, renderHeader },
+    ]
+
+    return (
+        <div>
+            <DataGrid
+                slots={{ toolbar: GridToolbar }}
+                density="compact"
+                disableRowSelectionOnClick
+                disableColumnFilter
+                disableColumnMenu
+                disableColumnSorting
+                disableDensitySelector
+                hideFooter
+                rows={rows}
+                // @ts-ignore
+                columns={columns}
+                style={{ width: '100%', backgroundColor: 'white', marginTop: 24, maxHeight: 148 }}
+            />
+        </div>
+    )
+}

@@ -1,4 +1,4 @@
-import { DataGrid, GridColumnHeaderParams } from "@mui/x-data-grid"
+import { DataGrid, GridColumnHeaderParams, GridToolbar } from "@mui/x-data-grid"
 
 type ResultsProps = {
     results: any[] | undefined,
@@ -28,6 +28,7 @@ export default function TrialResults({ results, role }: ResultsProps) {
             <h3>[{role.toUpperCase()}] Results: Face Attributes</h3>
             <div style={{ marginTop: 24 }}>
                 <DataGrid
+                    slots={{ toolbar: GridToolbar }}
                     density="compact"
                     disableRowSelectionOnClick
                     disableColumnFilter
