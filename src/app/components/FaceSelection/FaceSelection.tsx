@@ -8,7 +8,7 @@ import { useNavigationContext } from "@/app/NavigationProvider";
 type Response = {
   isCorrect: boolean,
   time: number,
-  persona: Persona,
+  persona: PersonaData,
   selectedPersonaId: number | null
 }
 
@@ -21,6 +21,16 @@ type Persona = {
   gender: string,
   id: number,
   image: string,
+  name: string,
+  race: string
+}
+
+type PersonaData = {
+  sentence?: string,
+  hasFamily?: boolean,
+  emotionalValency?: string,
+  gender: string,
+  id: number,
   name: string,
   race: string
 }
@@ -119,14 +129,28 @@ export default function FaceSelection({ hasContext, setTrialResponses }: FaceSel
     }
   }, [responses.length])
 
+  const getPersonaData = (persona: any): PersonaData => {
+    return {
+      id: persona.id,
+      name: persona.name,
+      gender: persona.gender,
+      race: persona.race,
+      // @ts-ignore
+      emotionalValency: persona.context?.emotionalValency,
+      hasFamily: persona.context?.hasFamily,
+      sentence: persona.context?.sentence
+    }
+  }
+
   const skip = () => {
+    const persona = data[nameIndex]
     setSelectedImage("unsure")
     setResponses([
       ...responses, 
       {
         isCorrect: false,
         time: stopwatch.getElapsedStartedTime(),
-        persona: data[nameIndex],
+        persona: getPersonaData(persona),
         selectedPersonaId: null
       }
     ])
@@ -138,7 +162,6 @@ export default function FaceSelection({ hasContext, setTrialResponses }: FaceSel
   const selectImage = (src: string) => {
     const imageName = src.split('/').pop()?.split('.')[0]
     const persona = data[nameIndex]
-    console.log("PERSONA: ", persona)
     const selectedPersona = data.find(persona => persona.image === imageName) as Persona
 
     setResponses([
@@ -146,16 +169,7 @@ export default function FaceSelection({ hasContext, setTrialResponses }: FaceSel
       {
         isCorrect: persona.id === selectedPersona.id,
         time: stopwatch.getElapsedStartedTime(),
-        persona: {
-          id: persona.id,
-          name: persona.name,
-          gender: persona.gender,
-          race: persona.race,
-          // @ts-ignore
-          emotionalValency: persona.context?.emotionalValency,
-          hasFamily: persona.context?.hasFamily,
-          sentence: persona.context?.sentence
-        },
+        persona: getPersonaData(persona),
         selectedPersonaId: selectedPersona.id
       }
     ])

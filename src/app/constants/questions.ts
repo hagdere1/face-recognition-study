@@ -57,7 +57,7 @@ export const PRETRIAL_QUESTIONS = [
             "I keep to myself",
             "I have one best friend",
             "I have a few close friends who I primarily interact with",
-            "I have a groups of friends with whom I enjoy spending time",
+            "I have a group of friends with whom I enjoy spending time",
             "I am very social"
         ]
     },
@@ -110,9 +110,9 @@ export const PRETRIAL_QUESTIONS_ORPHAN = [
     ...PRETRIAL_QUESTIONS,
     {
         id: "adoptedAge",
-        question: "At what age were you adopted/displaced?",
+        question: "At what age were you separated from your biological parents?",
         options: [
-            "1-3",
+            "0-3",
             "4-6",
             "7-10",
             "11-13"

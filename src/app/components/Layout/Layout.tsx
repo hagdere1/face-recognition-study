@@ -17,7 +17,7 @@ export default function Layout({ children }: LayoutProps) {
     return (
         <>
             {user && (
-                <div style={{ display: 'flex', justifyContent: user.role === ROLE.ADMIN ? 'space-between' : 'flex-end', padding: '12px 24px 36px 24px', }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 24px 36px 24px', }}>
                     <div style={{ fontSize: 18 }}><strong>Face Recognition Study</strong></div>
 
                     <div>
