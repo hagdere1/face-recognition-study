@@ -9,13 +9,13 @@ import { getFirestore } from "firebase/firestore";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyC32D6giRsFctuzdCBoN15SyainCgrnK0k",
-  authDomain: "orphan-face-recognition.firebaseapp.com",
-  projectId: "orphan-face-recognition",
-  storageBucket: "orphan-face-recognition.appspot.com",
-  messagingSenderId: "943407788841",
-  appId: "1:943407788841:web:c52001330d68097d9f3d38",
-  measurementId: "G-2VSG80MPT3"
+  apiKey: "AIzaSyBHmuB_-zGWZiWDzgT91ODJ-sCI0nhFm2U",
+  authDomain: "facial-memory-study.firebaseapp.com",
+  projectId: "facial-memory-study",
+  storageBucket: "facial-memory-study.appspot.com",
+  messagingSenderId: "507412989500",
+  appId: "1:507412989500:web:dd1e0b0a172e0c68226539",
+  measurementId: "G-05R8D3WH9X"
 };
 
 // Initialize Firebase
