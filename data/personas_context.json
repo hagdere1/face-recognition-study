@@ -24,7 +24,7 @@
     {"id": 58, "name": "Pedro", "image": "t2_pedro_m_n", "gender": "male", "race": "non-white", "context": {"sentence": "Pedro and his father were born in the same month", "hasFamily": true, "emotionalValency": "neutral"}},
     {"id": 59, "name": "Raida", "image": "t2_raida_f_w", "gender": "female", "race": "white", "context": {"sentence": "Raida has a freckle on her left thumb", "hasFamily": false, "emotionalValency": "neutral"}},
     {"id": 60, "name": "Raul", "image": "t2_raul_m_n", "gender": "male", "race": "non-white", "context": {"sentence": "Raul has a freckle on his right pinky", "hasFamily": false, "emotionalValency": "neutral"}},
-    {"id": 61, "name": "Robert", "image": "t2_robert_f_n", "gender": "female", "race": "non-white", "context": {"sentence": "Roberta likes her new shoes", "hasFamily": false, "emotionalValency": "positive"}},
+    {"id": 61, "name": "Roberta", "image": "t2_roberta_f_n", "gender": "female", "race": "non-white", "context": {"sentence": "Roberta likes her new shoes", "hasFamily": false, "emotionalValency": "positive"}},
     {"id": 62, "name": "Sam", "image": "t2_sam_m_n", "gender": "male", "race": "non-white", "context": {"sentence": "Sam hates the sound of his aunt loudly chewing gum", "hasFamily": true, "emotionalValency": "negative"}},
     {"id": 63, "name": "Selena", "image": "t2_selena_f_w", "gender": "female", "race": "white", "context": {"sentence": "Selena avoids doing her algebra homework", "hasFamily": false, "emotionalValency": "negative"}},
     {"id": 64, "name": "Shawn", "image": "t2_shawn_m_n", "gender": "male", "race": "non-white", "context": {"sentence": "Shawn argues with his mother all the time", "hasFamily": true, "emotionalValency": "negative"}},
