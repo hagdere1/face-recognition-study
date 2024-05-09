@@ -24,8 +24,7 @@ export async function GET(req: Request) {
 
         // Get all the users
         const users = await UserDetail.find({
-            trial1: { $ne: null },
-            trial2: { $ne: null }
+            surveyPostTrial: { $ne: null }
         }).exec()
 
         const averages = getResultsForRole(users, ROLE.USER)
