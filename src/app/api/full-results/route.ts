@@ -5,14 +5,14 @@ import { auth } from '../../firebase-admin';
 import { headers } from "next/headers"
 import { ROLE } from '@/app/constants/roles';
 import { getResultsForRole, getTrialResultsForAttribute } from '../utils';
-import { POSTTRIAL_QUESTIONS, PRETRIAL_QUESTIONS_ORPHAN } from '@/app/constants/questions';
+import { POSTTRIAL_QUESTIONS, PRETRIAL_QUESTIONS } from '@/app/constants/questions';
 
 connectDB()
 
 const getPreTrialSurveyResults = (users: any[]) => {
     const allResults: any[] = []
 
-    PRETRIAL_QUESTIONS_ORPHAN.forEach((question, questionIndex) => {
+    PRETRIAL_QUESTIONS.forEach((question, questionIndex) => {
         const questionResults = {
             id: question.id,
             question: question.question,
