@@ -8,7 +8,7 @@ export async function GET(req: Request) {
     const email = req.url.split('?')[1].split('=')[1]
 
     try {
-        const user = await UserDetail.findOne({ email }).exec()
+        const user = await UserDetail.findOne({ email: new RegExp(`^${email}$`, 'i') }).exec()
 
         if (!user) {
             throw new Error('User not found')

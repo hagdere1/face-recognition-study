@@ -25,7 +25,7 @@ export async function GET(req: Request) {
         const email = params[0].split('=')[1]
         const firebaseUid = params[1].split('=')[1]
 
-        const currentUser = await UserDetail.findOneAndUpdate({ email }, { firebaseUid }, { new: true }).exec()
+        const currentUser = await UserDetail.findOneAndUpdate({ email: new RegExp(`^${email}$`, 'i') }, { firebaseUid }, { new: true }).exec()
 
         return NextResponse.json(currentUser, { status: 200 })
     } catch (error) {

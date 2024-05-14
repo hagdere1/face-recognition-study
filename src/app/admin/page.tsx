@@ -101,7 +101,7 @@ export default function AdminView() {
         e.preventDefault()
 
         const member = {
-            email,
+            email: email.trim().toLowerCase(),
             group: group ? group : null,
             role
         }

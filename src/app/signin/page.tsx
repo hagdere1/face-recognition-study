@@ -28,7 +28,7 @@ export default function Login() {
 
     const signIn = async (e: any) => {
         e.preventDefault()
-        await sendAuthEmail(email.trim())
+        await sendAuthEmail(email.trim().toLowerCase())
         setEmailSent(true)
     }
 
