@@ -22,7 +22,23 @@ export const useNavigationContext = () => useContext(NavigationContext);
 const NavigationProvider = ({ children }: PropsWithChildren<{}>) => {
     const { user, refetchUser } = useAuth()
 
-    const [stepIndex, setStepIndex] = useState(0)
+    const getStepIndex = () => {
+        if (!user?.surveyPreTrial) {
+            return 0
+        }
+        if (!user.trial1) {
+            return 2
+        }
+        if (!user.trial2) {
+            return 8
+        }
+        if (!user.surveyPostTrial) {
+            return 13
+        }
+        return 17
+    }
+
+    const [stepIndex, setStepIndex] = useState(getStepIndex())
     const [showQuitDialog, setShowQuitDialog] = useState(false)
 
     const proceed = () => {
