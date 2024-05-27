@@ -11,11 +11,12 @@ import { useAuth } from '../AuthProvider';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-export default function Login() {
+export default function Signup() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [passwordConfirmation, setPasswordConfirmation] = useState('')
 
-    const { sendAuthEmail, status, user } = useAuth();
+    const { status, signup, user } = useAuth();
 
     const router = useRouter();
 
@@ -27,9 +28,17 @@ export default function Login() {
         }
     }
 
-    const signIn = async (e: any) => {
+    const submit = async (e: any) => {
+        if (password.length === 0) {
+            alert('Must enter a password to login')
+        }
+        if (password !== passwordConfirmation) {
+            alert('Password must match confirmation')
+        }
         e.preventDefault()
-        await sendAuthEmail(email.trim().toLowerCase())
+        // await sendAuthEmail(email.trim().toLowerCase())
+        // setEmailSent(true)
+        await signup(email.trim().toLowerCase(), password)
     }
 
     return (
@@ -45,9 +54,9 @@ export default function Login() {
         >
             <h1 style={{ marginBottom: 36 }}>Face Recognition Study</h1>
             <Typography component="h2" variant="h5">
-                Sign in
+                Sign up
             </Typography>
-            <Box component="form" onSubmit={signIn} noValidate style={{ marginTop: 24, padding: 24, backgroundColor: '#eee', borderRadius: 6, width: 380 }}>
+            <Box component="form" onSubmit={submit} noValidate style={{ marginTop: 24, padding: 24, backgroundColor: '#eee', borderRadius: 6, width: 380 }}>
                 <TextField
                     margin="normal"
                     fullWidth
@@ -66,23 +75,32 @@ export default function Login() {
                     id="password"
                     label="Password"
                     name="password"
-                    autoComplete="password"
-                    autoFocus
                     onChange={(e) => setPassword(e.target.value)}
                     value={password}
                     style={{ backgroundColor: '#fff' }}
                     type='password'
                 />
+                <TextField
+                    margin="normal"
+                    fullWidth
+                    id="passwordConfirmation"
+                    label="Password Confirmation"
+                    name="passwordConfirmation"
+                    onChange={(e) => setPasswordConfirmation(e.target.value)}
+                    value={passwordConfirmation}
+                    style={{ backgroundColor: '#fff' }}
+                    type='password'
+                />
                 <Button
-                    type="submit"
+                    type='submit'
                     fullWidth
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
                 >
-                Sign In
+                Sign Up
                 </Button>
             </Box>
-            <Box><Link href='/signup'>Sign up</Link></Box>
+            <Box>Already signed up? <Link href='/signin'>Sign in</Link></Box>
         </Box>
       </Container>
   );

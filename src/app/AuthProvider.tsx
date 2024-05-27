@@ -26,7 +26,8 @@ const AuthCtx = createContext<{
   status: authStatus;
   firebaseUser: FirebaseUser | null;
   user: User | null;
-  refetchUser(): void
+  refetchUser(): void;
+  signup(email: string, password: string): Promise<void>;
 }>({
     async sendAuthEmail(email: string) {},
     status: "loading",
@@ -36,7 +37,8 @@ const AuthCtx = createContext<{
     signOut() {},
     firebaseUser: null,
     user: null,
-    async refetchUser() {}
+    async refetchUser() {},
+    async signup() {}
 });
 
 export const useAuth = () => useContext(AuthCtx);
@@ -47,51 +49,76 @@ const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
 
   const router = useRouter()
 
-  const sendAuthEmail = async (email: string) => {
-      try {
-          const res = await fetch(`${BASE_URL}api/auth/whitelist?email=${email}`)
+  const signup = async (email: string, password: string) => {
+    try {
+      const res = await fetch(`${BASE_URL}api/auth/signup`, { 
+        method: 'PUT', 
+        headers: {
+            Authorization: `Bearer ${Cookies.get(process.env.NEXT_PUBLIC_AUTH_TOKEN_COOKIE_NAME || "")}`,
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+    })
 
-          if (!res.ok) {
-            throw new Error('User not found')
-          }
-
-          await sendSignInLinkToEmail(auth, email, {
-              url: `${BASE_URL}signin-confirm`,
-              handleCodeInApp: true
-          })
-          window.localStorage.setItem('orphanFaceRecognitionStudyEmail', email);
-      } catch(error: any) {
-          console.log(error);
+      if (!res.ok) {
+        throw new Error('User not found')
       }
+
+      window.localStorage.setItem('orphanFaceRecognitionStudyEmail', email);
+
+      setStatus("authenticated")
+      
+    } catch(error: any) {
+        console.log(error);
+    }
+  }
+
+  const sendAuthEmail = async (email: string) => {
+      // try {
+      //     const res = await fetch(`${BASE_URL}api/auth/whitelist?email=${email}`)
+
+      //     if (!res.ok) {
+      //       throw new Error('User not found')
+      //     }
+
+      //     await sendSignInLinkToEmail(auth, email, {
+      //         url: `${BASE_URL}signin-confirm`,
+      //         handleCodeInApp: true
+      //     })
+      //     window.localStorage.setItem('orphanFaceRecognitionStudyEmail', email);
+      // } catch(error: any) {
+      //     console.log(error);
+      // }
   };
 
   const verifyEmailLinkAndLogin = async () => {
-      const continueUrl = window.location.href;
+      // const continueUrl = window.location.href;
 
-      try {
-          const isValid = isSignInWithEmailLink(auth, continueUrl);
-          if (!isValid) {
-              return false;
-          }
+      // try {
+      //     const isValid = isSignInWithEmailLink(auth, continueUrl);
+      //     if (!isValid) {
+      //         return false;
+      //     }
 
-          const email = window.localStorage.getItem("orphanFaceRecognitionStudyEmail") as string;
-          if (!email) {
-              return false;
-          }
+      //     const email = window.localStorage.getItem("orphanFaceRecognitionStudyEmail") as string;
+      //     if (!email) {
+      //         return false;
+      //     }
 
-          await signInWithEmailLink(auth, email, continueUrl);
+      //     await signInWithEmailLink(auth, email, continueUrl);
           
-          setStatus("authenticated");
+      //     setStatus("authenticated");
 
-          window.localStorage.removeItem("orphanFaceRecognitionStudyEmail");
+      //     window.localStorage.removeItem("orphanFaceRecognitionStudyEmail");
 
-          return true;
-      } catch (error) {
-          console.log(error);
-          setStatus("unauthenticated");
+      //     return true;
+      // } catch (error) {
+      //     console.log(error);
+      //     setStatus("unauthenticated");
 
-          return false;
-      }
+      //     return false;
+      // }
+      return false
   };
 
   const signOut = async () => { 
@@ -141,6 +168,7 @@ const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
         firebaseUser: auth.currentUser,
         user: user ? user as User : null,
         signOut,
+        signup,
         refetchUser: async () => fetchUser(user?.email as string, auth.currentUser?.uid as string)
       }}
     >

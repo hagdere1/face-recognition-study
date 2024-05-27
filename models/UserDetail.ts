@@ -36,6 +36,7 @@ const TrialSchema = new mongoose.Schema({
 const UserDetailSchema = new mongoose.Schema({
     firebaseUid: { type: String, default: null },
     email: { type: String, required: true, unique: true, index: true, sparse: true },
+    password: { type: String },
     role: { type: String, required: true },
     group: { type: String },
     surveyPreTrial: { type: SurveySchema, default: null },
