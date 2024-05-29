@@ -1,8 +1,5 @@
 import { createContext, PropsWithChildren, useState, useContext, useEffect } from "react";
-import { User as FirebaseUser, isSignInWithEmailLink, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailLink} from "firebase/auth";
-import { auth } from "./firebase";
 import { useRouter  } from "next/navigation"
-import Cookies from 'js-cookie'
 import { BASE_URL } from "./constants/urls";
 
 type authStatus = "authenticated" | "unauthenticated" | "loading";
