@@ -102,6 +102,8 @@ const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
       if (res.ok) {
         const currentUser = await res.json()
         setUser(currentUser)
+      } else {
+        router.replace('/signin')
       }
 
     } catch (err) {

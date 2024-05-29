@@ -64,7 +64,6 @@ export default function Signup() {
                     id="email"
                     label="Email Address"
                     name="email"
-                    autoComplete="email"
                     autoFocus
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}

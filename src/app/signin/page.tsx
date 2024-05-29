@@ -57,7 +57,6 @@ export default function Login() {
                     id="email"
                     label="Email Address"
                     name="email"
-                    autoComplete="email"
                     autoFocus
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
@@ -69,7 +68,6 @@ export default function Login() {
                     id="password"
                     label="Password"
                     name="password"
-                    autoComplete="password"
                     autoFocus
                     onChange={(e) => setPassword(e.target.value)}
                     value={password}

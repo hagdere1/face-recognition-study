@@ -9,10 +9,15 @@ connectDB()
 export async function GET(req: Request) {
     try {
         const token = cookies().get("token")?.value || "";
+
+        if (!token) {
+            throw Error('Please include id token')
+        }
+        
         const data = jwt.verify(token, process.env.TOKEN_SECRET || '');
 
         if (!data) {
-            return NextResponse.json({ error: 'Please include id token' }, { status: 401 })
+            throw Error('Invalid id token')
         }
 
         // @ts-ignore
@@ -21,7 +26,8 @@ export async function GET(req: Request) {
         const currentUser = await UserDetail.findOne({ email: new RegExp(`^${email}$`, 'i') })
 
         return NextResponse.json(currentUser, { status: 200 })
-    } catch (error) {
+    } catch (error: any) {
         console.log(error)
+        return NextResponse.json({ error: error.message }, { status: 401 })
     }
 }
