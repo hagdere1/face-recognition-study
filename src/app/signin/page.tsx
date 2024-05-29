@@ -15,7 +15,7 @@ export default function Login() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const { sendAuthEmail, status, user } = useAuth();
+    const { signin, status, user } = useAuth();
 
     const router = useRouter();
 
@@ -27,9 +27,12 @@ export default function Login() {
         }
     }
 
-    const signIn = async (e: any) => {
+    const submit = async (e: any) => {
         e.preventDefault()
-        await sendAuthEmail(email.trim().toLowerCase())
+        if (password.length === 0) {
+            alert('Must enter a password to login')
+        }
+        await signin(email.trim().toLowerCase(), password)
     }
 
     return (
@@ -47,7 +50,7 @@ export default function Login() {
             <Typography component="h2" variant="h5">
                 Sign in
             </Typography>
-            <Box component="form" onSubmit={signIn} noValidate style={{ marginTop: 24, padding: 24, backgroundColor: '#eee', borderRadius: 6, width: 380 }}>
+            <Box component="form" onSubmit={submit} noValidate style={{ marginTop: 24, padding: 24, backgroundColor: '#eee', borderRadius: 6, width: 380 }}>
                 <TextField
                     margin="normal"
                     fullWidth

@@ -1,31 +1,24 @@
 import { NextResponse } from 'next/server';
 import UserDetail from '../../../../../models/UserDetail';
 import connectDB from '../../../../../db';
-import { auth } from '../../../firebase-admin';
-import { headers } from "next/headers"
+import { cookies } from 'next/headers';
+import jwt from 'jsonwebtoken';
 
 connectDB()
 
 export async function GET(req: Request) {
-    const referer = headers().get("authorization");
-  
-    if (!referer) {
-        return NextResponse.json({ error: 'Please include id token' }, { status: 401 });
-    }
-
     try {
-        const { uid } = await auth.verifyIdToken(referer.replace('Bearer ', ''));
-        
-        if (!uid) {
-            throw Error('Unauthenticated')
+        const token = cookies().get("token")?.value || "";
+        const data = jwt.verify(token, process.env.TOKEN_SECRET || '');
+
+        if (!data) {
+            return NextResponse.json({ error: 'Please include id token' }, { status: 401 })
         }
 
-        const queryString = req.url.split('?')[1]
-        const params = queryString.split('&')
-        const email = params[0].split('=')[1]
-        const firebaseUid = params[1].split('=')[1]
+        // @ts-ignore
+        const email = data.email
 
-        const currentUser = await UserDetail.findOneAndUpdate({ email: new RegExp(`^${email}$`, 'i') }, { firebaseUid }, { new: true }).exec()
+        const currentUser = await UserDetail.findOne({ email: new RegExp(`^${email}$`, 'i') })
 
         return NextResponse.json(currentUser, { status: 200 })
     } catch (error) {

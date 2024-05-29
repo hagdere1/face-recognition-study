@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
 import UserDetail from '../../../../../models/UserDetail';
 import connectDB from '../../../../../db';
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken';
 
 connectDB()
 
-export async function PUT(req: Request, res: Response) {
+export async function POST(req: Request, res: Response) {
     try {
         const body = await req.json()
         const emailRegex = new RegExp(`^${body.email}$`, 'i')
@@ -17,21 +17,20 @@ export async function PUT(req: Request, res: Response) {
             throw Error('User does not exist')
         }
 
-        if (user.password) {
-            throw Error('Account already exists')
+        const isPasswordMatch = await bcrypt.compare(body.password, user.password);
+        if (!isPasswordMatch) {
+          return NextResponse.json(
+            { error: "Invalid credentials" },
+            { status: 400 }
+          );
         }
 
-        const salt = await bcrypt.genSalt(10)
-        const hashedPassword = await bcrypt.hash(body.password, salt)
-
-        await UserDetail.findOneAndUpdate({ email: emailRegex }, { password: hashedPassword }, { new: true })
-
         const tokenData = {
-            email: body.email,
-            password: body.password,
+            email: user.email,
+            password: user.password,
         };
         const token = await jwt.sign(tokenData, process.env.TOKEN_SECRET || '', {
-            expiresIn: "60d",
+            expiresIn: "30d",
         });
 
         const response = NextResponse.json(user, { status: 200 })

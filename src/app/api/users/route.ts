@@ -1,23 +1,18 @@
 import { NextResponse } from 'next/server';
 import UserDetail from '../../../../models/UserDetail';
 import connectDB from '../../../../db';
-import { auth } from '../../firebase-admin';
-import { headers } from "next/headers"
+import { cookies } from 'next/headers';
+import jwt from 'jsonwebtoken';
 
 connectDB()
 
 export async function GET(req: Request) {
-    const referer = headers().get("authorization");
-  
-    if (!referer) {
-        return NextResponse.json({ error: 'Please include id token' }, { status: 401 });
-    }
-
     try {
-        const { uid } = await auth.verifyIdToken(referer.replace('Bearer ', ''));
-        
-        if (!uid) {
-            throw Error('Unauthenticated')
+        const token = cookies().get("token")?.value || "";
+        const data = jwt.verify(token, process.env.TOKEN_SECRET || '');
+
+        if (!data) {
+            return NextResponse.json({ error: 'Please include id token' }, { status: 401 })
         }
 
         const users = await UserDetail.find().exec()
@@ -29,17 +24,13 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
     const { email, role, group } = await req.json()
-    const referer = headers().get("authorization");
-  
-    if (!referer) {
-        return NextResponse.json({ error: 'Please include id token' }, { status: 401 });
-    }
 
     try {
-        const { uid } = await auth.verifyIdToken(referer.replace('Bearer ', ''));
-        
-        if (!uid) {
-            throw Error('Unauthenticated')
+        const token = cookies().get("token")?.value || "";
+        const data = jwt.verify(token, process.env.TOKEN_SECRET || '');
+
+        if (!data) {
+            return NextResponse.json({ error: 'Please include id token' }, { status: 401 })
         }
 
         const user = await UserDetail.create({ email, role, group })

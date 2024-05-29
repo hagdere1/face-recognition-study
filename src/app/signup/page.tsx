@@ -29,15 +29,16 @@ export default function Signup() {
     }
 
     const submit = async (e: any) => {
+        e.preventDefault()
         if (password.length === 0) {
             alert('Must enter a password to login')
+        }
+        if (password.length < 8) {
+            alert('Password must be at least 8 characters')
         }
         if (password !== passwordConfirmation) {
             alert('Password must match confirmation')
         }
-        e.preventDefault()
-        // await sendAuthEmail(email.trim().toLowerCase())
-        // setEmailSent(true)
         await signup(email.trim().toLowerCase(), password)
     }
 

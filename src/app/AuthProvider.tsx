@@ -20,25 +20,19 @@ type User = {
 }
 
 const AuthCtx = createContext<{
-  sendAuthEmail(email: string): Promise<void>;
-  verifyEmailLinkAndLogin(): Promise<boolean>;
   signOut(): void;
   status: authStatus;
-  firebaseUser: FirebaseUser | null;
   user: User | null;
   refetchUser(): void;
   signup(email: string, password: string): Promise<void>;
+  signin(email: string, password: string): Promise<void>;
 }>({
-    async sendAuthEmail(email: string) {},
     status: "loading",
-    async verifyEmailLinkAndLogin() {
-        return false;
-    },
     signOut() {},
-    firebaseUser: null,
     user: null,
     async refetchUser() {},
-    async signup() {}
+    async signup() {},
+    async signin() {},
 });
 
 export const useAuth = () => useContext(AuthCtx);
@@ -54,7 +48,6 @@ const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
       const res = await fetch(`${BASE_URL}api/auth/signup`, { 
         method: 'PUT', 
         headers: {
-            Authorization: `Bearer ${Cookies.get(process.env.NEXT_PUBLIC_AUTH_TOKEN_COOKIE_NAME || "")}`,
             'Content-type': 'application/json'
         },
         body: JSON.stringify({ email, password })
@@ -64,8 +57,7 @@ const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
         throw new Error('User not found')
       }
 
-      window.localStorage.setItem('orphanFaceRecognitionStudyEmail', email);
-
+      await fetchUser()
       setStatus("authenticated")
       
     } catch(error: any) {
@@ -73,73 +65,43 @@ const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
     }
   }
 
-  const sendAuthEmail = async (email: string) => {
-      // try {
-      //     const res = await fetch(`${BASE_URL}api/auth/whitelist?email=${email}`)
+  const signin = async (email: string, password: string) => {
+    try {
+      const res = await fetch(`${BASE_URL}api/auth/signin`, { 
+        method: 'POST', 
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      })
 
-      //     if (!res.ok) {
-      //       throw new Error('User not found')
-      //     }
+      if (!res.ok) {
+        throw new Error('User not found')
+      }
 
-      //     await sendSignInLinkToEmail(auth, email, {
-      //         url: `${BASE_URL}signin-confirm`,
-      //         handleCodeInApp: true
-      //     })
-      //     window.localStorage.setItem('orphanFaceRecognitionStudyEmail', email);
-      // } catch(error: any) {
-      //     console.log(error);
-      // }
-  };
-
-  const verifyEmailLinkAndLogin = async () => {
-      // const continueUrl = window.location.href;
-
-      // try {
-      //     const isValid = isSignInWithEmailLink(auth, continueUrl);
-      //     if (!isValid) {
-      //         return false;
-      //     }
-
-      //     const email = window.localStorage.getItem("orphanFaceRecognitionStudyEmail") as string;
-      //     if (!email) {
-      //         return false;
-      //     }
-
-      //     await signInWithEmailLink(auth, email, continueUrl);
-          
-      //     setStatus("authenticated");
-
-      //     window.localStorage.removeItem("orphanFaceRecognitionStudyEmail");
-
-      //     return true;
-      // } catch (error) {
-      //     console.log(error);
-      //     setStatus("unauthenticated");
-
-      //     return false;
-      // }
-      return false
-  };
+      await fetchUser()
+      setStatus("authenticated")
+      
+    } catch(error: any) {
+        console.log(error);
+        alert('Invalid email or password')
+    }
+  }
 
   const signOut = async () => { 
-    await auth.signOut();
-    Cookies.remove(process.env.NEXT_PUBLIC_AUTH_TOKEN_COOKIE_NAME || "");
+    await fetch(`${BASE_URL}api/auth/signout`)
     setUser(null)
+    setStatus('unauthenticated')
     router.replace('/signin')
   }
 
-  const fetchUser = async (email: string, firebaseUid: string) => {
+  const fetchUser = async () => {
     try {
-      const res = await fetch(`${BASE_URL}api/users/current?email=${email}&firebaseUid=${firebaseUid}`, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get(process.env.NEXT_PUBLIC_AUTH_TOKEN_COOKIE_NAME || "")}`
-        }
-      })
+      const res = await fetch(`${BASE_URL}api/users/current`)
 
       if (res.ok) {
         const currentUser = await res.json()
         setUser(currentUser)
-        setStatus("authenticated");
       }
 
     } catch (err) {
@@ -148,28 +110,18 @@ const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
   }
 
   useEffect(() => {
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const idToken = await user.getIdToken()
-        Cookies.set(process.env.NEXT_PUBLIC_AUTH_TOKEN_COOKIE_NAME || "", idToken, { sameSite: "strict" });
-        fetchUser(user.email as string, auth.currentUser?.uid as string)
-      } else { 
-        setStatus("unauthenticated"); 
-      }
-    });
-  }, [status]);
+    fetchUser()
+  }, [status])
 
   return (
     <AuthCtx.Provider
       value={{
-        sendAuthEmail,
         status,
-        verifyEmailLinkAndLogin,
-        firebaseUser: auth.currentUser,
         user: user ? user as User : null,
         signOut,
         signup,
-        refetchUser: async () => fetchUser(user?.email as string, auth.currentUser?.uid as string)
+        signin,
+        refetchUser: async () => fetchUser()
       }}
     >
       {children}
